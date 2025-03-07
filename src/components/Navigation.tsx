@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { BookOpenText, Menu, X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Navigation = () => {
@@ -36,7 +36,11 @@ const Navigation = () => {
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between">
           <Link to="/" className="flex items-center space-x-2">
-            <BookOpenText className="h-8 w-8 text-study-500" />
+            <img 
+              src="/lovable-uploads/e813e076-c30c-4761-a1cb-1db67af1a642.png" 
+              alt="Study AI Logo" 
+              className="h-10 w-auto" 
+            />
             <span className="text-xl font-display font-medium text-gray-900">Study AI</span>
           </Link>
 

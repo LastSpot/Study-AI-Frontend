@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Upload, BookText, MessageSquare, CheckCircle } from 'lucide-react';
+import { Upload, BookText, MessageSquare, CheckCircle, ArrowRight } from 'lucide-react';
 
 const HowItWorks = () => {
   const steps = [
@@ -49,11 +49,11 @@ const HowItWorks = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto relative">
           {steps.map((step, index) => (
             <div 
               key={index} 
-              className={`flex flex-col items-center text-center animate-fade-in-up ${step.delay}`}
+              className={`flex flex-col items-center text-center animate-fade-in-up ${step.delay} relative`}
             >
               <div className={`w-16 h-16 ${step.color} rounded-full flex items-center justify-center mb-5 shadow-lg`}>
                 {step.icon}
@@ -65,15 +65,8 @@ const HowItWorks = () => {
               <p className="text-gray-600">{step.description}</p>
 
               {index < steps.length - 1 && (
-                <div className="hidden lg:block absolute top-1/2 transform -translate-y-1/2 translate-x-[60px]">
-                  <svg className="w-24 h-8 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 8">
-                    <path 
-                      strokeLinecap="round" 
-                      strokeLinejoin="round" 
-                      strokeWidth={1.5} 
-                      d="M0 4h20m0 0l-4 -4m4 4l-4 4" 
-                    />
-                  </svg>
+                <div className="hidden lg:flex absolute top-12 left-full items-center justify-center w-12 z-10 transform -translate-x-6">
+                  <ArrowRight className="w-8 h-8 text-gray-300" />
                 </div>
               )}
             </div>

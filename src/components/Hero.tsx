@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { ChevronRight, Upload, MessageSquare, BookOpen } from 'lucide-react';
+import { ChevronRight, Upload, MessageSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const Hero = () => {
@@ -66,7 +66,11 @@ const Hero = () => {
               <div className="p-5 space-y-4">
                 <div className="flex items-start gap-3">
                   <div className="flex-shrink-0 w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
-                    <BookOpen className="h-4 w-4 text-gray-500" />
+                    <img 
+                      src="/lovable-uploads/e813e076-c30c-4761-a1cb-1db67af1a642.png" 
+                      alt="User" 
+                      className="w-5 h-5" 
+                    />
                   </div>
                   <div className="glass-card p-3 rounded-lg rounded-tl-none max-w-[85%]">
                     <p className="text-sm text-gray-700">I've uploaded my lecture notes on quantum computing. Can you help me understand the concept of quantum entanglement?</p>
@@ -86,7 +90,11 @@ const Hero = () => {
 
                 <div className="flex items-start gap-3">
                   <div className="flex-shrink-0 w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
-                    <BookOpen className="h-4 w-4 text-gray-500" />
+                    <img 
+                      src="/lovable-uploads/e813e076-c30c-4761-a1cb-1db67af1a642.png" 
+                      alt="User" 
+                      className="w-5 h-5" 
+                    />
                   </div>
                   <div className="glass-card p-3 rounded-lg rounded-tl-none max-w-[85%]">
                     <p className="text-sm text-gray-700">That makes sense! Can you explain how this relates to quantum computing applications?</p>
