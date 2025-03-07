@@ -2,18 +2,18 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { BookOpenText, LogIn, User, Lock } from 'lucide-react';
+import { BookOpenText, UserPlus, User, Lock, Mail } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
-const Login = () => {
+const Signup = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   
-  const handleLogin = (e: React.FormEvent) => {
+  const handleSignup = (e: React.FormEvent) => {
     e.preventDefault();
     toast({
-      title: "Success!",
-      description: "You've been logged in successfully.",
+      title: "Account created!",
+      description: "Your account has been created successfully.",
     });
     // For simplicity, no authentication logic
     navigate('/chat');
@@ -28,20 +28,40 @@ const Login = () => {
       
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-display font-medium mb-2 text-gray-900">Welcome back</h1>
-          <p className="text-gray-600">Sign in to your Study AI account</p>
+          <h1 className="text-3xl font-display font-medium mb-2 text-gray-900">Join Study AI</h1>
+          <p className="text-gray-600">Create your account and start learning</p>
         </div>
         
         <div className="bg-white rounded-2xl shadow-lg p-8">
-          <form onSubmit={handleLogin} className="space-y-6">
+          <form onSubmit={handleSignup} className="space-y-6">
             <div className="space-y-4">
+              <div>
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+                  Full name
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <User className="h-5 w-5 text-gray-400" />
+                  </div>
+                  <input
+                    id="name"
+                    name="name"
+                    type="text"
+                    autoComplete="name"
+                    placeholder="Enter your name"
+                    className="pl-10 w-full h-12 bg-gray-50 border border-gray-300 rounded-xl focus:ring-study-500 focus:border-study-500 px-4"
+                    required
+                  />
+                </div>
+              </div>
+              
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
                   Email address
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <User className="h-5 w-5 text-gray-400" />
+                    <Mail className="h-5 w-5 text-gray-400" />
                   </div>
                   <input
                     id="email"
@@ -50,19 +70,15 @@ const Login = () => {
                     autoComplete="email"
                     placeholder="Enter your email"
                     className="pl-10 w-full h-12 bg-gray-50 border border-gray-300 rounded-xl focus:ring-study-500 focus:border-study-500 px-4"
+                    required
                   />
                 </div>
               </div>
               
               <div>
-                <div className="flex justify-between items-center mb-1">
-                  <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                    Password
-                  </label>
-                  <Link to="/forgot-password" className="text-sm font-medium text-study-500 hover:text-study-600">
-                    Forgot password?
-                  </Link>
-                </div>
+                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+                  Password
+                </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <Lock className="h-5 w-5 text-gray-400" />
@@ -71,9 +87,10 @@ const Login = () => {
                     id="password"
                     name="password"
                     type="password"
-                    autoComplete="current-password"
-                    placeholder="Enter your password"
+                    autoComplete="new-password"
+                    placeholder="Create a password"
                     className="pl-10 w-full h-12 bg-gray-50 border border-gray-300 rounded-xl focus:ring-study-500 focus:border-study-500 px-4"
+                    required
                   />
                 </div>
               </div>
@@ -81,13 +98,14 @@ const Login = () => {
             
             <div className="flex items-center">
               <input
-                id="remember-me"
-                name="remember-me"
+                id="terms"
+                name="terms"
                 type="checkbox"
                 className="h-4 w-4 text-study-500 focus:ring-study-500 border-gray-300 rounded"
+                required
               />
-              <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
-                Remember me
+              <label htmlFor="terms" className="ml-2 block text-sm text-gray-700">
+                I agree to the <a href="#" className="text-study-500 hover:text-study-600">Terms</a> and <a href="#" className="text-study-500 hover:text-study-600">Privacy Policy</a>
               </label>
             </div>
             
@@ -95,8 +113,8 @@ const Login = () => {
               type="submit" 
               className="w-full h-12 bg-study-500 hover:bg-study-600 text-white font-medium rounded-xl flex items-center justify-center"
             >
-              <LogIn className="h-5 w-5 mr-2" />
-              Sign in
+              <UserPlus className="h-5 w-5 mr-2" />
+              Create account
             </Button>
           </form>
           
@@ -118,15 +136,15 @@ const Login = () => {
                   <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
                   <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
                 </svg>
-                Sign in with Google
+                Sign up with Google
               </button>
             </div>
           </div>
           
           <p className="mt-8 text-center text-sm text-gray-600">
-            Not registered yet?{' '}
-            <Link to="/signup" className="font-medium text-study-500 hover:text-study-600">
-              Create an account
+            Already have an account?{' '}
+            <Link to="/login" className="font-medium text-study-500 hover:text-study-600">
+              Sign in
             </Link>
           </p>
         </div>
@@ -135,4 +153,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;

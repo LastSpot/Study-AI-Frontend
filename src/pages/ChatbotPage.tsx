@@ -1,8 +1,7 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { BookOpenText, Send, Menu, X, LogOut, ChevronUp, PlusCircle } from 'lucide-react';
+import { Send, Menu, X, LogOut, ChevronUp, PlusCircle } from 'lucide-react';
 import ChatMessage from '@/components/ChatMessage';
 import FileUpload from '@/components/FileUpload';
 
@@ -33,12 +32,10 @@ const ChatbotPage: React.FC = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
-  // Handle sidebar toggle on mobile
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  // Detect scroll position to show/hide scroll to bottom button
   useEffect(() => {
     const handleScroll = () => {
       if (!chatContainerRef.current) return;
@@ -56,7 +53,6 @@ const ChatbotPage: React.FC = () => {
     }
   }, []);
 
-  // Auto-scroll to bottom when new messages appear
   useEffect(() => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -68,7 +64,6 @@ const ChatbotPage: React.FC = () => {
     
     if (!inputMessage.trim()) return;
     
-    // Add user message
     const userMessage: Message = {
       id: Date.now().toString(),
       text: inputMessage,
@@ -80,7 +75,6 @@ const ChatbotPage: React.FC = () => {
     setInputMessage('');
     setIsLoading(true);
     
-    // Simulate bot response
     setTimeout(() => {
       const botResponse: Message = {
         id: (Date.now() + 1).toString(),
@@ -97,7 +91,6 @@ const ChatbotPage: React.FC = () => {
   const handleFileUpload = (file: File) => {
     setIsUploading(true);
     
-    // Simulate file processing
     setTimeout(() => {
       const botResponse: Message = {
         id: Date.now().toString(),
@@ -121,7 +114,6 @@ const ChatbotPage: React.FC = () => {
 
   return (
     <div className="flex h-screen bg-white overflow-hidden">
-      {/* Sidebar */}
       <div 
         className={`h-full bg-gray-50 border-r transition-all duration-300 absolute md:relative z-30 ${
           isSidebarOpen ? 'w-64 opacity-100' : 'w-0 opacity-0 -translate-x-full md:w-20 md:opacity-100 md:translate-x-0'
@@ -130,7 +122,11 @@ const ChatbotPage: React.FC = () => {
         <div className="flex flex-col h-full">
           <div className="p-4 border-b">
             <Link to="/" className={`flex items-center ${isSidebarOpen ? 'justify-start' : 'justify-center'}`}>
-              <BookOpenText className="h-8 w-8 text-study-500" />
+              <img 
+                src="/lovable-uploads/750f0573-2828-4e93-af20-a16361b9f5e6.png" 
+                alt="Study AI Logo" 
+                className="h-8 w-auto" 
+              />
               {isSidebarOpen && <span className="text-xl font-display font-medium text-gray-900 ml-2">Study AI</span>}
             </Link>
           </div>
@@ -173,9 +169,7 @@ const ChatbotPage: React.FC = () => {
         </div>
       </div>
       
-      {/* Chat container */}
       <div className="flex-1 flex flex-col h-full overflow-hidden relative">
-        {/* Mobile header with toggle */}
         <div className="md:hidden flex items-center justify-between border-b p-4">
           <button
             onClick={toggleSidebar}
@@ -185,14 +179,17 @@ const ChatbotPage: React.FC = () => {
           </button>
           
           <Link to="/" className="flex items-center">
-            <BookOpenText className="h-6 w-6 text-study-500" />
+            <img 
+              src="/lovable-uploads/750f0573-2828-4e93-af20-a16361b9f5e6.png" 
+              alt="Study AI Logo" 
+              className="h-6 w-auto" 
+            />
             <span className="text-lg font-display font-medium text-gray-900 ml-2">Study AI</span>
           </Link>
           
-          <div className="w-6"></div> {/* Spacer for alignment */}
+          <div className="w-6"></div>
         </div>
         
-        {/* Chat messages */}
         <div 
           ref={chatContainerRef}
           className="flex-1 overflow-y-auto"
@@ -218,7 +215,6 @@ const ChatbotPage: React.FC = () => {
           </div>
         </div>
         
-        {/* Scroll to bottom button */}
         {showScrollButton && (
           <button
             onClick={scrollToBottom}
@@ -229,12 +225,10 @@ const ChatbotPage: React.FC = () => {
           </button>
         )}
         
-        {/* File upload area */}
         <div className="absolute bottom-24 left-0 right-0 bg-white border-t">
           <FileUpload onUpload={handleFileUpload} />
         </div>
         
-        {/* Input area */}
         <div className="absolute bottom-0 left-0 right-0 border-t bg-white">
           <form onSubmit={handleSendMessage} className="p-4">
             <div className="relative flex items-center">

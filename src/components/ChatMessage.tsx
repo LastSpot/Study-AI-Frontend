@@ -19,28 +19,39 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isBot, timestamp }) 
     <div 
       className={cn(
         "flex gap-4 mb-4 px-4 md:px-6", 
-        isBot ? "bg-gray-50 py-6 rounded-lg" : "py-4"
+        isBot ? "bg-gray-50 py-6 rounded-lg" : "py-4 justify-end"
       )}
     >
-      {isBot ? (
+      {isBot && (
         <div className="flex-shrink-0 h-8 w-8 rounded-full bg-study-100 flex items-center justify-center">
           <BookOpenText className="h-5 w-5 text-study-600" />
         </div>
-      ) : (
-        <div className="flex-shrink-0 h-8 w-8 rounded-full bg-gray-200 flex items-center justify-center">
-          <span className="text-gray-700 text-sm font-medium">You</span>
-        </div>
       )}
       
-      <div className="flex flex-col flex-1">
-        <div className="flex items-center mb-1">
+      <div className={cn(
+        "flex flex-col max-w-3xl",
+        isBot ? "flex-1" : "items-end"
+      )}>
+        <div className={cn(
+          "flex items-center mb-1",
+          isBot ? "" : "flex-row-reverse"
+        )}>
           <span className="font-medium mr-2">{isBot ? 'Study AI' : 'You'}</span>
           <span className="text-xs text-gray-500">{formattedTime}</span>
         </div>
-        <div className="prose prose-gray max-w-none">
-          <p className="whitespace-pre-wrap">{message}</p>
+        <div className={cn(
+          "prose prose-gray",
+          isBot ? "max-w-none" : "bg-study-500 text-white p-3 rounded-2xl rounded-tr-none"
+        )}>
+          <p className="whitespace-pre-wrap m-0">{message}</p>
         </div>
       </div>
+      
+      {!isBot && (
+        <div className="flex-shrink-0 h-8 w-8 rounded-full bg-study-500 flex items-center justify-center">
+          <span className="text-white text-sm font-medium">You</span>
+        </div>
+      )}
     </div>
   );
 };

@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Upload, X, FileText } from 'lucide-react';
+import { FileText, X, Upload } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface FileUploadProps {
@@ -11,6 +11,7 @@ interface FileUploadProps {
 const FileUpload: React.FC<FileUploadProps> = ({ onUpload }) => {
   const [file, setFile] = useState<File | null>(null);
   const [isDragging, setIsDragging] = useState(false);
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
@@ -50,6 +51,12 @@ const FileUpload: React.FC<FileUploadProps> = ({ onUpload }) => {
     setFile(null);
   };
 
+  const handleBrowseClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
   return (
     <div className="p-4 border-b">
       {!file ? (
@@ -64,29 +71,27 @@ const FileUpload: React.FC<FileUploadProps> = ({ onUpload }) => {
         >
           <Upload className="h-10 w-10 mx-auto mb-2 text-gray-400" />
           <p className="mb-2 text-sm font-medium text-gray-700">
-            Drag and drop your lecture PDF here
+            Upload your lecture PDF
           </p>
           <p className="text-xs text-gray-500 mb-3">
-            Only PDF files are accepted
+            Drag and drop or click the button below
           </p>
           
-          <div className="flex justify-center">
-            <label className="cursor-pointer">
-              <Button
-                type="button"
-                variant="outline"
-                className="text-sm hover:bg-study-50"
-              >
-                Browse files
-              </Button>
-              <input
-                type="file"
-                className="hidden"
-                onChange={handleFileChange}
-                accept="application/pdf"
-              />
-            </label>
-          </div>
+          <input
+            type="file"
+            className="hidden"
+            ref={fileInputRef}
+            onChange={handleFileChange}
+            accept="application/pdf"
+          />
+          
+          <Button
+            type="button"
+            onClick={handleBrowseClick}
+            className="bg-study-500 hover:bg-study-600 text-white"
+          >
+            Upload PDF
+          </Button>
         </div>
       ) : (
         <div className="bg-gray-50 rounded-lg p-4">
