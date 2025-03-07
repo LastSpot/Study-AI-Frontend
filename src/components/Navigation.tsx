@@ -36,6 +36,7 @@ const Navigation = () => {
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between">
           <Link to="/" className="flex items-center space-x-2">
+            <img src="/study-ai-brain-no-bg.png" alt="Study AI Logo" className="h-12 w-auto" />
             <span className="text-xl font-display font-medium text-gray-900">Study AI</span>
           </Link>
 

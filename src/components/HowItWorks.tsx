@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Upload, BookText, MessageSquare, CheckCircle, ArrowRight } from 'lucide-react';
 
@@ -85,7 +84,7 @@ const HowItWorks = () => {
                   Start using Study AI today and experience the power of having an AI study companion that knows your specific lecture material.
                 </p>
                 <a 
-                  href="#" 
+                  href="/signup" 
                   className="inline-flex items-center text-study-500 font-medium hover:text-study-600 transition-colors"
                 >
                   Get Started Free

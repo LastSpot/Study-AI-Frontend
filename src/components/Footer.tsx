@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Instagram, Linkedin, Mail } from 'lucide-react';
 
@@ -10,7 +9,7 @@ const Footer = () => {
           <div>
             <div className="flex items-center space-x-2 mb-6">
               <img 
-                src="/lovable-uploads/e813e076-c30c-4761-a1cb-1db67af1a642.png" 
+                src="/study-ai-brain-no-bg.png" 
                 alt="Study AI Logo" 
                 className="h-10 w-auto" 
               />
@@ -20,10 +19,10 @@ const Footer = () => {
               Revolutionize your study sessions with an AI chatbot that understands your specific lecture material.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-gray-500 hover:text-study-500 transition-colors">
+              <a href="https://www.instagram.com" className="text-gray-500 hover:text-study-500 transition-colors">
                 <Instagram className="h-5 w-5" />
               </a>
-              <a href="#" className="text-gray-500 hover:text-study-500 transition-colors">
+              <a href="https://www.linkedin.com" className="text-gray-500 hover:text-study-500 transition-colors">
                 <Linkedin className="h-5 w-5" />
               </a>
               <a href="mailto:example@gmail.com" className="text-gray-500 hover:text-study-500 transition-colors">

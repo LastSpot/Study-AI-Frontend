@@ -1,9 +1,9 @@
-
 import React, { useState } from 'react';
 import { ChevronRight, Upload, MessageSquare, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { Link } from 'react-router-dom';
+import emailjs from 'emailjs-com';
 
 const Hero = () => {
   const [email, setEmail] = useState('');
@@ -12,13 +12,34 @@ const Hero = () => {
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
     if (email) {
-      toast({
-        title: "Thanks for subscribing!",
-        description: "We'll keep you updated with the latest news.",
+      emailjs.send(
+        serviceId,
+        templateId,
+        {
+          to_email: 'anhminhle402@gmail.com',
+          from_email: email,
+        },
+        userId
+      ).then((result) => {
+        console.log('Email sent successfully:', result.text);
+        toast({
+          title: "Thanks for taking interest in Study AI!",
+          description: "We'll contact you shortly.",
+        });
+      }, (error) => {
+        console.error('Error sending email:', error.text);
+        toast({
+          title: "Subscription failed",
+          description: "There was an error sending your subscription. Please try again later.",
+        });
       });
       setEmail('');
     }
   };
+
+  const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+  const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+  const userId = import.meta.env.VITE_EMAILJS_USER_ID;
 
   return (
     <section className="pt-32 pb-24 md:pt-48 md:pb-32 overflow-hidden">

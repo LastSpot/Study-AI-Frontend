@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Star } from 'lucide-react';
 
@@ -66,6 +65,9 @@ const Testimonials = () => {
     }
   ];
 
+  // Calculate the average rating
+  const averageRating = (testimonials.reduce((sum, testimonial) => sum + testimonial.rating, 0) / testimonials.length).toFixed(1);
+
   return (
     <section id="testimonials" className="section bg-white">
       <div className="container mx-auto px-4 md:px-6">
@@ -97,7 +99,7 @@ const Testimonials = () => {
 
         <div className="mt-16 text-center">
           <div className="inline-flex items-center space-x-2 text-study-500 font-medium">
-            <span className="bg-study-100 text-study-600 px-2.5 py-1 rounded-full text-sm">4.9/5</span>
+            <span className="bg-study-100 text-study-600 px-2.5 py-1 rounded-full text-sm">{averageRating}/5</span>
             <span>Average student satisfaction</span>
           </div>
         </div>
