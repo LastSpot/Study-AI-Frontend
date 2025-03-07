@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { BookOpenText, Menu, X } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -34,10 +35,10 @@ const Navigation = () => {
     >
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between">
-          <a href="#" className="flex items-center space-x-2">
+          <Link to="/" className="flex items-center space-x-2">
             <BookOpenText className="h-8 w-8 text-study-500" />
             <span className="text-xl font-display font-medium text-gray-900">Study AI</span>
-          </a>
+          </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
@@ -62,11 +63,11 @@ const Navigation = () => {
           </nav>
 
           <div className="hidden md:flex items-center space-x-4">
-            <Button variant="ghost" className="text-gray-700 hover:text-study-500">
-              Login
+            <Button variant="ghost" className="text-gray-700 hover:text-study-500" asChild>
+              <Link to="/login">Login</Link>
             </Button>
-            <Button className="bg-study-500 hover:bg-study-600 text-white rounded-full px-6">
-              Sign Up Free
+            <Button className="bg-study-500 hover:bg-study-600 text-white rounded-full px-6" asChild>
+              <Link to="/login">Sign Up Free</Link>
             </Button>
           </div>
 
@@ -110,11 +111,11 @@ const Navigation = () => {
             Testimonials
           </a>
           <div className="flex flex-col space-y-2 pt-2 border-t">
-            <Button variant="ghost" className="text-gray-700 justify-center">
-              Login
+            <Button variant="ghost" className="text-gray-700 justify-center" asChild>
+              <Link to="/login">Login</Link>
             </Button>
-            <Button className="bg-study-500 hover:bg-study-600 text-white rounded-full">
-              Sign Up Free
+            <Button className="bg-study-500 hover:bg-study-600 text-white rounded-full" asChild>
+              <Link to="/login">Sign Up Free</Link>
             </Button>
           </div>
         </div>
