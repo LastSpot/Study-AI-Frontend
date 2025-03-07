@@ -1,9 +1,25 @@
 
-import React from 'react';
-import { ChevronRight, Upload, MessageSquare } from 'lucide-react';
+import React, { useState } from 'react';
+import { ChevronRight, Upload, MessageSquare, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useToast } from '@/hooks/use-toast';
+import { Link } from 'react-router-dom';
 
 const Hero = () => {
+  const [email, setEmail] = useState('');
+  const { toast } = useToast();
+
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (email) {
+      toast({
+        title: "Thanks for subscribing!",
+        description: "We'll keep you updated with the latest news.",
+      });
+      setEmail('');
+    }
+  };
+
   return (
     <section className="pt-32 pb-24 md:pt-48 md:pb-32 overflow-hidden">
       <div className="container mx-auto px-4 md:px-6">
@@ -23,12 +39,11 @@ const Hero = () => {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button className="btn-primary group">
-                Try For Free
-                <ChevronRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </Button>
-              <Button className="btn-secondary">
-                Learn More
+              <Button className="btn-primary group" asChild>
+                <Link to="/signup">
+                  Try For Free
+                  <ChevronRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </Link>
               </Button>
             </div>
 
@@ -123,6 +138,29 @@ const Hero = () => {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+      
+      {/* Email subscription section */}
+      <div className="container mx-auto px-4 md:px-6 mt-16">
+        <div className="bg-study-50 rounded-2xl p-8 md:p-12 shadow-sm">
+          <div className="max-w-3xl mx-auto text-center">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">Stay updated with our latest features</h2>
+            <p className="text-gray-600 mb-8">Be the first to know about new features and updates. No spam, promise!</p>
+            <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+              <input
+                type="email"
+                placeholder="Enter your email"
+                className="flex-1 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-study-500 focus:border-study-500"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+              <Button type="submit" className="bg-study-500 hover:bg-study-600 text-white py-3 px-6 rounded-lg">
+                Subscribe <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </form>
           </div>
         </div>
       </div>

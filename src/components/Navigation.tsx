@@ -71,7 +71,7 @@ const Navigation = () => {
               <Link to="/login">Login</Link>
             </Button>
             <Button className="bg-study-500 hover:bg-study-600 text-white rounded-full px-6" asChild>
-              <Link to="/login">Sign Up Free</Link>
+              <Link to="/signup">Sign Up</Link>
             </Button>
           </div>
 
@@ -119,7 +119,7 @@ const Navigation = () => {
               <Link to="/login">Login</Link>
             </Button>
             <Button className="bg-study-500 hover:bg-study-600 text-white rounded-full" asChild>
-              <Link to="/login">Sign Up Free</Link>
+              <Link to="/signup">Sign Up</Link>
             </Button>
           </div>
         </div>
