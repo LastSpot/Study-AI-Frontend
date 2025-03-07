@@ -1,12 +1,12 @@
 
 import React from 'react';
-import { Instagram, Linkedin, Mail, Tiktok } from 'lucide-react';
+import { Instagram, Linkedin, Mail } from 'lucide-react';
 
 const Footer = () => {
   return (
     <footer className="bg-gray-50 pt-16 pb-8 border-t border-gray-200">
       <div className="container mx-auto px-4 md:px-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
           <div>
             <div className="flex items-center space-x-2 mb-6">
               <img 
@@ -27,30 +27,27 @@ const Footer = () => {
                 <Linkedin className="h-5 w-5" />
               </a>
               <a href="#" className="text-gray-500 hover:text-study-500 transition-colors">
-                <Tiktok className="h-5 w-5" />
+                {/* Custom TikTok icon using SVG */}
+                <svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  className="h-5 w-5" 
+                  viewBox="0 0 24 24" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  strokeWidth="2" 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round"
+                >
+                  <path d="M9 12a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"></path>
+                  <path d="M16 8v8"></path>
+                  <path d="M12 16v-8a4 4 0 0 1 4-4"></path>
+                  <path d="M16 8a4 4 0 0 0 4 4"></path>
+                </svg>
               </a>
               <a href="mailto:example@gmail.com" className="text-gray-500 hover:text-study-500 transition-colors">
                 <Mail className="h-5 w-5" />
               </a>
             </div>
-          </div>
-
-          <div>
-            <h3 className="font-medium text-gray-900 mb-6">Product</h3>
-            <ul className="space-y-4">
-              <li>
-                <a href="#features" className="text-gray-600 hover:text-study-500 transition-colors">Features</a>
-              </li>
-              <li>
-                <a href="#how-it-works" className="text-gray-600 hover:text-study-500 transition-colors">How It Works</a>
-              </li>
-              <li>
-                <a href="#testimonials" className="text-gray-600 hover:text-study-500 transition-colors">Testimonials</a>
-              </li>
-              <li>
-                <a href="#" className="text-gray-600 hover:text-study-500 transition-colors">Pricing</a>
-              </li>
-            </ul>
           </div>
 
           <div>
