@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { BookOpenText } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -19,12 +18,12 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isBot, timestamp }) 
     <div 
       className={cn(
         "flex gap-4 mb-4 px-4 md:px-6", 
-        isBot ? "bg-gray-50 py-6 rounded-lg" : "py-4 justify-end"
+        isBot ? "bg-muted/50 py-6" : "py-4 justify-end"
       )}
     >
       {isBot && (
-        <div className="flex-shrink-0 h-8 w-8 rounded-full bg-study-100 flex items-center justify-center">
-          <BookOpenText className="h-5 w-5 text-study-600" />
+        <div className="flex-shrink-0 h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
+          <BookOpenText className="h-5 w-5 text-primary" />
         </div>
       )}
       
@@ -37,19 +36,19 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isBot, timestamp }) 
           isBot ? "" : "flex-row-reverse"
         )}>
           <span className="font-medium mr-2">{isBot ? 'Study AI' : 'You'}</span>
-          <span className="text-xs text-gray-500">{formattedTime}</span>
+          <span className="text-xs text-muted-foreground">{formattedTime}</span>
         </div>
         <div className={cn(
-          "prose prose-gray",
-          isBot ? "max-w-none" : "bg-study-500 text-white p-3 rounded-2xl rounded-tr-none"
+          "prose prose-gray dark:prose-invert max-w-none",
+          isBot ? "" : "bg-primary text-primary-foreground p-3 rounded-2xl rounded-tr-none"
         )}>
           <p className="whitespace-pre-wrap m-0">{message}</p>
         </div>
       </div>
       
       {!isBot && (
-        <div className="flex-shrink-0 h-8 w-8 rounded-full bg-study-500 flex items-center justify-center">
-          <span className="text-white text-sm font-medium">You</span>
+        <div className="flex-shrink-0 h-8 w-8 rounded-full bg-primary flex items-center justify-center">
+          <span className="text-primary-foreground text-sm font-medium">You</span>
         </div>
       )}
     </div>

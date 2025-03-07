@@ -146,19 +146,19 @@ const Hero = () => {
       <div className="container mx-auto px-4 md:px-6 mt-16">
         <div className="bg-study-50 rounded-2xl p-8 md:p-12 shadow-sm">
           <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">Stay updated with our latest features</h2>
-            <p className="text-gray-600 mb-8">Be the first to know about new features and updates. No spam, promise!</p>
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">Stay updated with lifetime access</h2>
+            <p className="text-gray-600 mb-8">Join our waitlist to gain lifetime access.</p>
             <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="flex-1 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-study-500 focus:border-study-500"
+                className="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-study-500 focus:border-study-500"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
               <Button type="submit" className="bg-study-500 hover:bg-study-600 text-white py-3 px-6 rounded-lg">
-                Subscribe <ArrowRight className="ml-2 h-4 w-4" />
+                Keep in touch <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </form>
           </div>

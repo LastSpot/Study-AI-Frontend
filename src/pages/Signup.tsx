@@ -22,7 +22,6 @@ const Signup = () => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-blue-50 to-white p-4">
       <Link to="/" className="absolute top-4 left-4 flex items-center space-x-2">
-        <img src="/lovable-uploads/750f0573-2828-4e93-af20-a16361b9f5e6.png" alt="Study AI Logo" className="h-8 w-auto" />
         <span className="text-xl font-display font-medium text-gray-900">Study AI</span>
       </Link>
       

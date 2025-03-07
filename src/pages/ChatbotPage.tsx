@@ -1,15 +1,22 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Send, Menu, X, LogOut, ChevronUp, PlusCircle } from 'lucide-react';
+import { Send, Menu, X, LogOut, ChevronUp, PlusCircle, Upload, Moon, Sun, Pencil, Check } from 'lucide-react';
 import ChatMessage from '@/components/ChatMessage';
-import FileUpload from '@/components/FileUpload';
+import { useTheme } from '@/components/theme-provider';
+import { cn } from '@/lib/utils';
 
 interface Message {
   id: string;
   text: string;
   isBot: boolean;
   timestamp: Date;
+}
+
+interface Lecture {
+  id: string;
+  title: string;
+  timestamp: string;
 }
 
 const INITIAL_MESSAGES: Message[] = [
@@ -28,9 +35,57 @@ const ChatbotPage: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isUploading, setIsUploading] = useState(false);
   const [showScrollButton, setShowScrollButton] = useState(false);
+  const [pastLectures, setPastLectures] = useState<Lecture[]>([]);
+  const [currentLectureId, setCurrentLectureId] = useState<string | null>(null);
+  const [currentTitle, setCurrentTitle] = useState("New lecture");
+  const [isEditingTitle, setIsEditingTitle] = useState(false);
+  const [tempTitle, setTempTitle] = useState("");
+  const { theme, setTheme } = useTheme();
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const titleInputRef = useRef<HTMLInputElement>(null);
+
+  // Fetch past lectures
+  useEffect(() => {
+    const fetchPastLectures = async () => {
+      try {
+        const response = await fetch('http://localhost:5050/lectures');
+        if (!response.ok) throw new Error('Failed to fetch lectures');
+        const data = await response.json();
+        setPastLectures(data);
+      } catch (error) {
+        console.error('Error fetching lectures:', error);
+      }
+    };
+
+    fetchPastLectures();
+  }, []);
+
+  const handleLectureSelect = async (lectureId: string) => {
+    try {
+      setIsLoading(true);
+      const response = await fetch(`http://localhost:5050/lectures/${lectureId}`);
+      if (!response.ok) throw new Error('Failed to fetch lecture content');
+      const data = await response.json();
+      
+      setCurrentLectureId(lectureId);
+      setCurrentTitle(data.title);
+      // Add a message to indicate the context switch
+      const contextMessage: Message = {
+        id: Date.now().toString(),
+        text: `Switched to lecture context: "${data.title}". You can now ask questions about this material.`,
+        isBot: true,
+        timestamp: new Date()
+      };
+      setMessages([contextMessage]);
+    } catch (error) {
+      console.error('Error fetching lecture content:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -59,7 +114,7 @@ const ChatbotPage: React.FC = () => {
     }
   }, [messages]);
 
-  const handleSendMessage = (e: React.FormEvent) => {
+  const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!inputMessage.trim()) return;
@@ -75,23 +130,62 @@ const ChatbotPage: React.FC = () => {
     setInputMessage('');
     setIsLoading(true);
     
-    setTimeout(() => {
+    try {
+      // If we have a current lecture context, include it in the request
+      const payload = {
+        message: inputMessage,
+        lectureId: currentLectureId
+      };
+
+      const response = await fetch('http://localhost:5050/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) throw new Error('Failed to get response');
+      const data = await response.json();
+      
       const botResponse: Message = {
-        id: (Date.now() + 1).toString(),
-        text: `I'm your Study AI assistant. This is a simulated response to "${inputMessage}". Upload your lecture notes for me to provide more specific assistance.`,
+        id: Date.now().toString(),
+        text: data.response,
         isBot: true,
         timestamp: new Date()
       };
       
       setMessages(prev => [...prev, botResponse]);
+    } catch (error) {
+      console.error('Error getting chat response:', error);
+      // Add error message to chat
+      const errorMessage: Message = {
+        id: Date.now().toString(),
+        text: 'Sorry, I encountered an error processing your request. Please try again.',
+        isBot: true,
+        timestamp: new Date()
+      };
+      setMessages(prev => [...prev, errorMessage]);
+    } finally {
       setIsLoading(false);
-    }, 1000);
+    }
   };
 
-  const handleFileUpload = (file: File) => {
+  const handleFileUpload = async (file: File) => {
     setIsUploading(true);
     
-    setTimeout(() => {
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const response = await fetch('http://localhost:5050/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) throw new Error('Failed to upload file');
+      const data = await response.json();
+      
       const botResponse: Message = {
         id: Date.now().toString(),
         text: `I've processed your lecture notes: "${file.name}". You can now ask questions about this material.`,
@@ -100,8 +194,31 @@ const ChatbotPage: React.FC = () => {
       };
       
       setMessages(prev => [...prev, botResponse]);
+      // Refresh the lectures list after upload
+      const lecturesResponse = await fetch('http://localhost:5050/lectures');
+      if (lecturesResponse.ok) {
+        const lecturesData = await lecturesResponse.json();
+        setPastLectures(lecturesData);
+      }
+    } catch (error) {
+      console.error('Error uploading file:', error);
+      const errorMessage: Message = {
+        id: Date.now().toString(),
+        text: 'Sorry, I encountered an error uploading your file. Please try again.',
+        isBot: true,
+        timestamp: new Date()
+      };
+      setMessages(prev => [...prev, errorMessage]);
+    } finally {
       setIsUploading(false);
-    }, 2000);
+    }
+  };
+
+  const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      handleFileUpload(file);
+    }
   };
 
   const scrollToBottom = () => {
@@ -110,25 +227,83 @@ const ChatbotPage: React.FC = () => {
 
   const startNewChat = () => {
     setMessages(INITIAL_MESSAGES);
+    setCurrentLectureId(null);
+    setCurrentTitle("New lecture");
+  };
+
+  const handleTitleEdit = () => {
+    setTempTitle(currentTitle);
+    setIsEditingTitle(true);
+    setTimeout(() => {
+      titleInputRef.current?.focus();
+      titleInputRef.current?.select();
+    }, 0);
+  };
+
+  const handleTitleSave = async () => {
+    if (!tempTitle.trim()) return;
+    
+    if (currentLectureId) {
+      try {
+        const response = await fetch(`http://localhost:5050/lectures/${currentLectureId}`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ title: tempTitle }),
+        });
+
+        if (!response.ok) throw new Error('Failed to update title');
+
+        setCurrentTitle(tempTitle);
+        // Refresh lectures list to update sidebar
+        const lecturesResponse = await fetch('http://localhost:5050/lectures');
+        if (lecturesResponse.ok) {
+          const data = await lecturesResponse.json();
+          setPastLectures(data);
+        }
+      } catch (error) {
+        console.error('Error updating title:', error);
+      }
+    } else {
+      setCurrentTitle(tempTitle);
+    }
+    setIsEditingTitle(false);
+  };
+
+  const handleTitleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleTitleSave();
+    } else if (e.key === 'Escape') {
+      setIsEditingTitle(false);
+      setTempTitle(currentTitle);
+    }
   };
 
   return (
-    <div className="flex h-screen bg-white overflow-hidden">
+    <div className="flex h-screen bg-background text-foreground overflow-hidden">
       <div 
-        className={`h-full bg-gray-50 border-r transition-all duration-300 absolute md:relative z-30 ${
+        className={`h-full bg-muted/50 border-r transition-all duration-300 absolute md:relative z-30 ${
           isSidebarOpen ? 'w-64 opacity-100' : 'w-0 opacity-0 -translate-x-full md:w-20 md:opacity-100 md:translate-x-0'
         }`}
       >
         <div className="flex flex-col h-full">
-          <div className="p-4 border-b">
-            <Link to="/" className={`flex items-center ${isSidebarOpen ? 'justify-start' : 'justify-center'}`}>
-              <img 
-                src="/lovable-uploads/750f0573-2828-4e93-af20-a16361b9f5e6.png" 
-                alt="Study AI Logo" 
-                className="h-8 w-auto" 
-              />
-              {isSidebarOpen && <span className="text-xl font-display font-medium text-gray-900 ml-2">Study AI</span>}
-            </Link>
+          <div className="p-4 border-b flex items-center justify-between">
+            <div className={`flex items-center ${isSidebarOpen ? 'justify-start' : 'justify-center'}`}>
+              {isSidebarOpen && <span className="text-xl font-display font-medium">Study AI</span>}
+            </div>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+              className="ml-auto"
+            >
+              {theme === "light" ? (
+                <Moon className="h-5 w-5" />
+              ) : (
+                <Sun className="h-5 w-5" />
+              )}
+            </Button>
           </div>
           
           <div className="flex-1 overflow-y-auto p-4">
@@ -136,30 +311,37 @@ const ChatbotPage: React.FC = () => {
               <>
                 <Button 
                   onClick={startNewChat}
-                  className="w-full flex items-center justify-start gap-2 mb-4 bg-white border hover:bg-gray-50"
+                  className="w-full flex items-center justify-start gap-2 mb-4 bg-background border hover:bg-accent text-foreground"
                 >
                   <PlusCircle className="h-4 w-4" />
                   New chat
                 </Button>
                 
                 <div className="space-y-1">
-                  <h3 className="text-xs font-medium text-gray-500 uppercase mb-2">Recent chats</h3>
-                  <div className="cursor-pointer p-2 rounded hover:bg-gray-100 text-sm">
-                    Physics 101 - Week 3
-                  </div>
-                  <div className="cursor-pointer p-2 rounded hover:bg-gray-100 text-sm">
-                    Chemistry - Lab Session
-                  </div>
-                  <div className="cursor-pointer p-2 rounded hover:bg-gray-100 text-sm">
-                    Introduction to Psychology
-                  </div>
+                  <h3 className="text-xs font-medium text-muted-foreground uppercase mb-2">Past Lectures</h3>
+                  {pastLectures.length === 0 ? (
+                    <p className="text-sm text-muted-foreground p-2">No lectures yet</p>
+                  ) : (
+                    pastLectures.map((lecture) => (
+                      <button
+                        key={lecture.id}
+                        onClick={() => handleLectureSelect(lecture.id)}
+                        className={cn(
+                          "w-full text-left cursor-pointer p-2 rounded hover:bg-accent text-sm",
+                          currentLectureId === lecture.id && "bg-accent"
+                        )}
+                      >
+                        {lecture.title}
+                      </button>
+                    ))
+                  )}
                 </div>
               </>
             )}
           </div>
           
           <div className="p-4 border-t">
-            <Button variant="ghost" className="w-full justify-start text-gray-700" asChild>
+            <Button variant="ghost" className="w-full justify-start text-foreground" asChild>
               <Link to="/">
                 <LogOut className="h-5 w-5 mr-2" />
                 <span className={isSidebarOpen ? 'block' : 'hidden'}>Sign out</span>
@@ -173,21 +355,51 @@ const ChatbotPage: React.FC = () => {
         <div className="md:hidden flex items-center justify-between border-b p-4">
           <button
             onClick={toggleSidebar}
-            className="text-gray-700 focus:outline-none"
+            className="text-foreground focus:outline-none"
           >
             {isSidebarOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
           
-          <Link to="/" className="flex items-center">
-            <img 
-              src="/lovable-uploads/750f0573-2828-4e93-af20-a16361b9f5e6.png" 
-              alt="Study AI Logo" 
-              className="h-6 w-auto" 
-            />
-            <span className="text-lg font-display font-medium text-gray-900 ml-2">Study AI</span>
-          </Link>
+          <span className="text-lg font-display font-medium">Study AI</span>
           
           <div className="w-6"></div>
+        </div>
+        
+        <div className="border-b p-4 flex items-center justify-between">
+          {isEditingTitle ? (
+            <div className="flex-1 flex items-center gap-2">
+              <input
+                ref={titleInputRef}
+                type="text"
+                value={tempTitle}
+                onChange={(e) => setTempTitle(e.target.value)}
+                onKeyDown={handleTitleKeyDown}
+                onBlur={handleTitleSave}
+                className="flex-1 bg-background border-b border-primary focus:outline-none text-lg font-medium py-1"
+                placeholder="Enter lecture title..."
+              />
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={handleTitleSave}
+                className="h-8 w-8"
+              >
+                <Check className="h-4 w-4" />
+              </Button>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2">
+              <h1 className="text-lg font-medium">{currentTitle}</h1>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={handleTitleEdit}
+                className="h-8 w-8"
+              >
+                <Pencil className="h-4 w-4" />
+              </Button>
+            </div>
+          )}
         </div>
         
         <div 
@@ -206,8 +418,8 @@ const ChatbotPage: React.FC = () => {
             {isLoading && (
               <div className="px-4 py-2">
                 <div className="flex items-center animate-pulse">
-                  <div className="h-6 w-6 rounded-full bg-gray-200 mr-2"></div>
-                  <div className="h-4 w-24 bg-gray-200 rounded"></div>
+                  <div className="h-6 w-6 rounded-full bg-muted mr-2"></div>
+                  <div className="h-4 w-24 bg-muted rounded"></div>
                 </div>
               </div>
             )}
@@ -218,18 +430,14 @@ const ChatbotPage: React.FC = () => {
         {showScrollButton && (
           <button
             onClick={scrollToBottom}
-            className="absolute bottom-32 right-4 bg-white bg-opacity-80 backdrop-blur-sm rounded-full p-2 shadow-lg border text-gray-600 hover:text-study-500 transition-colors"
+            className="absolute bottom-32 right-4 bg-background bg-opacity-80 backdrop-blur-sm rounded-full p-2 shadow-lg border text-foreground hover:text-primary transition-colors"
             aria-label="Scroll to bottom"
           >
             <ChevronUp className="h-5 w-5 rotate-180" />
           </button>
         )}
         
-        <div className="absolute bottom-24 left-0 right-0 bg-white border-t">
-          <FileUpload onUpload={handleFileUpload} />
-        </div>
-        
-        <div className="absolute bottom-0 left-0 right-0 border-t bg-white">
+        <div className="absolute bottom-0 left-0 right-0 border-t bg-background">
           <form onSubmit={handleSendMessage} className="p-4">
             <div className="relative flex items-center">
               <input
@@ -237,20 +445,33 @@ const ChatbotPage: React.FC = () => {
                 value={inputMessage}
                 onChange={(e) => setInputMessage(e.target.value)}
                 placeholder="Ask something about your lecture notes..."
-                className="w-full p-4 pr-14 rounded-full border border-gray-300 focus:border-study-500 focus:ring-study-500 focus:outline-none"
+                className="w-full p-4 pr-24 pl-12 rounded-full border focus:border-primary focus:ring-primary focus:outline-none bg-background"
                 disabled={isLoading || isUploading}
               />
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleFileInputChange}
+                className="hidden"
+                accept=".pdf,.doc,.docx,.txt"
+              />
+              <Button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                className="absolute left-1.5 h-10 w-10 p-0 rounded-full hover:bg-accent"
+                variant="ghost"
+                disabled={isLoading || isUploading}
+              >
+                <Upload className="h-5 w-5" />
+              </Button>
               <Button
                 type="submit"
-                className="absolute right-1.5 h-10 w-10 p-0 rounded-full bg-study-500 hover:bg-study-600 disabled:opacity-50"
+                className="absolute right-1.5 h-10 w-10 p-0 rounded-full bg-primary hover:bg-primary/90 disabled:opacity-50"
                 disabled={!inputMessage.trim() || isLoading || isUploading}
               >
-                <Send className="h-5 w-5 text-white" />
+                <Send className="h-5 w-5 text-primary-foreground" />
               </Button>
             </div>
-            <p className="mt-2 text-xs text-center text-gray-500">
-              Upload your lecture PDF for more accurate answers
-            </p>
           </form>
         </div>
       </div>

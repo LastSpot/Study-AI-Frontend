@@ -1,69 +1,58 @@
-# Welcome to your Lovable project
+# Study AI Frontend
 
-## Project info
+## Overview
 
-**URL**: https://lovable.dev/projects/db768a64-f365-4e78-af1b-f3a389e7d739
+This is the frontend for the Study AI application, designed to provide users with an interactive platform to upload lecture notes and interact with an AI chatbot for study assistance. The application allows users to manage their study materials, engage in AI-driven conversations, and switch between light and dark modes for a personalized experience.
 
-## How can I edit this code?
+## Tech Stack
 
-There are several ways of editing your application.
+- **Vite**: A fast build tool and development server for modern web projects.
+- **TypeScript**: A typed superset of JavaScript that compiles to plain JavaScript.
+- **React**: A JavaScript library for building user interfaces.
+- **shadcn-ui**: A component library for building accessible and customizable UI components.
+- **Tailwind CSS**: A utility-first CSS framework for rapid UI development.
 
-**Use Lovable**
+## Tools and Libraries
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/db768a64-f365-4e78-af1b-f3a389e7d739) and start prompting.
+- **React Router**: For handling routing and navigation within the application.
+- **Lucide Icons**: A collection of beautiful and customizable icons.
+- **React Query**: For managing server state and caching.
+- **Radix UI**: For building accessible and high-quality UI components.
+- **Toast Notifications**: For displaying feedback messages to users.
 
-Changes made via Lovable will be committed automatically to this repo.
+## Setup Instructions
 
-**Use your preferred IDE**
+To set up the project locally, follow these steps:
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+1. **Clone the Repository**: 
+   ```sh
+   git clone <YOUR_GIT_URL>
+   cd <YOUR_PROJECT_NAME>
+   ```
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+2. **Install Dependencies**: 
+   Ensure you have Node.js and npm installed. Then run:
+   ```sh
+   npm install
+   ```
 
-Follow these steps:
+3. **Run the Development Server**: 
+   Start the server with auto-reloading and an instant preview:
+   ```sh
+   npm run dev
+   ```
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+4. **Access the Application**: 
+   Open your browser and navigate to `http://localhost:3000` to view the application.
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+## Deployment
 
-# Step 3: Install the necessary dependencies.
-npm i
+To deploy the project, you can use platforms like Netlify or Vercel. For deployment via Lovable, visit [Lovable](https://lovable.dev/projects/db768a64-f365-4e78-af1b-f3a389e7d739) and click on Share -> Publish.
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+## Custom Domain
 
-**Edit a file directly in GitHub**
+Currently, custom domains are not supported directly through Lovable. For deploying under your own domain, consider using Netlify. More details can be found in the [Custom domains documentation](https://docs.lovable.dev/tips-tricks/custom-domain/).
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Purpose
 
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with .
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/db768a64-f365-4e78-af1b-f3a389e7d739) and click on Share -> Publish.
-
-## I want to use a custom domain - is that possible?
-
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+The Study AI frontend is designed to enhance the learning experience by providing a seamless interface for students to interact with AI-driven study tools. It allows users to upload lecture notes, engage in contextual AI conversations, and manage their study sessions effectively.
