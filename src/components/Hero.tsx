@@ -104,23 +104,23 @@ const Hero = () => {
                 <div className="flex items-start gap-3">
                   <div className="flex-shrink-0 w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
                     <img 
-                      src="/lovable-uploads/e813e076-c30c-4761-a1cb-1db67af1a642.png" 
+                      src="/study-ai-brain-no-bg.png" 
                       alt="User" 
                       className="w-5 h-5" 
                     />
                   </div>
                   <div className="glass-card p-3 rounded-lg rounded-tl-none max-w-[85%]">
-                    <p className="text-sm text-gray-700">I've uploaded my lecture notes on quantum computing. Can you help me understand the concept of quantum entanglement?</p>
+                    <p className="text-sm text-gray-700">I have read your lecture notes on quantum computing. Let discuss about the concept of quantum entanglement.</p>
                   </div>
                 </div>
                 
                 <div className="flex items-start gap-3 flex-row-reverse">
                   <div className="flex-shrink-0 w-8 h-8 bg-study-500 rounded-full flex items-center justify-center">
-                    <MessageSquare className="h-4 w-4 text-white" />
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary-foreground"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                   </div>
                   <div className="glass-card p-3 rounded-lg rounded-tr-none max-w-[85%] shadow-sm bg-study-50/80">
                     <p className="text-sm text-gray-700">
-                      Based on your lecture notes, quantum entanglement is a physical phenomenon where pairs of particles remain connected so that actions performed on one affect the other, regardless of distance. Professor Johnson explained it on page 14 using the example of entangled photons...
+                      I still don't quite get it. Can you explain it in a simpler way?
                     </p>
                   </div>
                 </div>
@@ -128,13 +128,15 @@ const Hero = () => {
                 <div className="flex items-start gap-3">
                   <div className="flex-shrink-0 w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
                     <img 
-                      src="/lovable-uploads/e813e076-c30c-4761-a1cb-1db67af1a642.png" 
+                      src="/study-ai-brain-no-bg.png" 
                       alt="User" 
                       className="w-5 h-5" 
                     />
                   </div>
                   <div className="glass-card p-3 rounded-lg rounded-tl-none max-w-[85%]">
-                    <p className="text-sm text-gray-700">That makes sense! Can you explain how this relates to quantum computing applications?</p>
+                    <p className="text-sm text-gray-700">
+                      Okay, so imagine you've got two coins, right? But they're not normal coins. They're "quantum" coins. You flip them, but instead of landing heads or tails separately, they're linked. Like, if one lands heads, the other instantly lands tails, even if they're miles apart. That's kind of what quantum entanglement is. Two particles become linked in a way that their fates are intertwined. You measure one, and you automatically know the state of the other, no matter the distance.
+                    </p>
                   </div>
                 </div>
 

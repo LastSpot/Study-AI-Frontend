@@ -1,12 +1,25 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState } from 'react';
+import axios from 'axios';
 
 interface AuthContextType {
   isAuthenticated: boolean;
   user: any | null;
   login: (email: string, password: string) => Promise<void>;
+  signup: (full_name: string, email: string, password: string) => Promise<void>;
   logout: () => void;
   loading: boolean;
+  api: typeof api;
+  checkAuthStatus: () => Promise<void>;
 }
+
+// Create axios instance with default config
+const api = axios.create({
+  baseURL: 'http://localhost:5050',
+  withCredentials: true,
+  headers: {
+    'Content-Type': 'application/json',
+  }
+});
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
@@ -15,21 +28,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Check if user is logged in on mount
-  useEffect(() => {
-    checkAuthStatus();
-  }, []);
-
   const checkAuthStatus = async () => {
     try {
-      const response = await fetch('http://localhost:5050/auth/status', {
-        credentials: 'include', // Important for cookies
-      });
-      
-      if (response.ok) {
-        const data = await response.json();
-        setUser(data.user);
+      const response = await api.get('/auth/status');
+  
+      if (response.status === 200) {
+        setUser(response.data.user);
         setIsAuthenticated(true);
+      } else {
+        console.log('User not authenticated');
       }
     } catch (error) {
       console.error('Auth check failed:', error);
@@ -37,25 +44,51 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setLoading(false);
     }
   };
+  
+
+  const signup = async (full_name: string, email: string, password: string) => {
+    try {
+      const response = await api.post('/auth/signup', { 
+        full_name, 
+        email, 
+        password 
+      });
+
+      if (response.status === 200) {
+        const { user, access_token } = response.data;
+        // Set token from response body
+        if (access_token) {
+          api.defaults.headers.common['Authorization'] = `Bearer ${access_token}`;
+        }
+        setUser(user);
+        setIsAuthenticated(true);
+      } else {
+        throw new Error('Signup failed');
+      }
+    } catch (error) {
+      console.error('Signup failed:', error);
+      throw error;
+    }
+  };
 
   const login = async (email: string, password: string) => {
     try {
-      const response = await fetch('http://localhost:5050/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include', // Important for cookies
-        body: JSON.stringify({ email, password }),
+      const response = await api.post('/auth/login', { 
+        email, 
+        password 
       });
 
-      if (!response.ok) {
+      if (response.status === 200) {
+        const { user, access_token } = response.data;
+        // Set token from response body
+        if (access_token) {
+          api.defaults.headers.common['Authorization'] = `Bearer ${access_token}`;
+        }
+        setUser(user);
+        setIsAuthenticated(true);
+      } else {
         throw new Error('Login failed');
       }
-
-      const data = await response.json();
-      setUser(data.user);
-      setIsAuthenticated(true);
     } catch (error) {
       console.error('Login failed:', error);
       throw error;
@@ -64,20 +97,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const logout = async () => {
     try {
-      await fetch('http://localhost:5050/auth/logout', {
-        method: 'POST',
-        credentials: 'include',
-      });
+      await api.post('/auth/logout');
     } catch (error) {
       console.error('Logout failed:', error);
     } finally {
+      // Remove the Authorization header
+      delete api.defaults.headers.common['Authorization'];
       setUser(null);
       setIsAuthenticated(false);
     }
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user, login, logout, loading }}>
+    <AuthContext.Provider value={{ isAuthenticated, user, signup, login, logout, loading, api, checkAuthStatus }}>
       {children}
     </AuthContext.Provider>
   );

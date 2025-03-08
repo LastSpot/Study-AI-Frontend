@@ -22,8 +22,8 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isBot, timestamp }) 
       )}
     >
       {isBot && (
-        <div className="flex-shrink-0 h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
-          <BookOpenText className="h-5 w-5 text-primary" />
+        <div className="flex-shrink-0 h-8 w-8 rounded-full bg-gray-200 dark:bg-white bg-primary/10 flex items-center justify-center">
+          <img src="/study-ai-brain-no-bg.png" alt="Study AI" className="h-7 w-7" />
         </div>
       )}
       
@@ -35,7 +35,6 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isBot, timestamp }) 
           "flex items-center mb-1",
           isBot ? "" : "flex-row-reverse"
         )}>
-          <span className="font-medium mr-2">{isBot ? 'Study AI' : 'You'}</span>
           <span className="text-xs text-muted-foreground">{formattedTime}</span>
         </div>
         <div className={cn(
@@ -48,7 +47,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isBot, timestamp }) 
       
       {!isBot && (
         <div className="flex-shrink-0 h-8 w-8 rounded-full bg-primary flex items-center justify-center">
-          <span className="text-primary-foreground text-sm font-medium">You</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary-foreground"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
         </div>
       )}
     </div>

@@ -1,9 +1,17 @@
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
+import { useEffect } from 'react';
 
 export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const { isAuthenticated, loading } = useAuth();
+  const { isAuthenticated, loading, checkAuthStatus } = useAuth();
   const location = useLocation();
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      await checkAuthStatus();
+    };
+    checkAuth();
+  }, []);
 
   if (loading) {
     // You might want to show a loading spinner here

@@ -5,6 +5,7 @@ import { Send, Menu, X, LogOut, ChevronUp, PlusCircle, Upload, Moon, Sun, Pencil
 import ChatMessage from '@/components/ChatMessage';
 import { useTheme } from '@/components/theme-provider';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface Message {
   id: string;
@@ -29,13 +30,14 @@ const INITIAL_MESSAGES: Message[] = [
 ];
 
 const ChatbotPage: React.FC = () => {
+  const { user, api } = useAuth();
   const [messages, setMessages] = useState<Message[]>(INITIAL_MESSAGES);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isUploading, setIsUploading] = useState(false);
   const [showScrollButton, setShowScrollButton] = useState(false);
-  const [pastLectures, setPastLectures] = useState<Lecture[]>([]);
+  const [pastLectures, setPastLectures] = useState([]);
   const [currentLectureId, setCurrentLectureId] = useState<string | null>(null);
   const [currentTitle, setCurrentTitle] = useState("New lecture");
   const [isEditingTitle, setIsEditingTitle] = useState(false);
@@ -47,28 +49,25 @@ const ChatbotPage: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const titleInputRef = useRef<HTMLInputElement>(null);
 
+  const fetchPastLectures = async () => {
+    try {
+      const response = await api.get('/lectures/');
+      setPastLectures(response.data);
+    } catch (error) {
+      console.error('Error fetching lectures:', error);
+    }
+  };
+
   // Fetch past lectures
   useEffect(() => {
-    const fetchPastLectures = async () => {
-      try {
-        const response = await fetch('http://localhost:5050/lectures');
-        if (!response.ok) throw new Error('Failed to fetch lectures');
-        const data = await response.json();
-        setPastLectures(data);
-      } catch (error) {
-        console.error('Error fetching lectures:', error);
-      }
-    };
-
     fetchPastLectures();
   }, []);
 
   const handleLectureSelect = async (lectureId: string) => {
     try {
       setIsLoading(true);
-      const response = await fetch(`http://localhost:5050/lectures/${lectureId}`);
-      if (!response.ok) throw new Error('Failed to fetch lecture content');
-      const data = await response.json();
+      const response = await api.get(`/lectures/${lectureId}`);
+      const data = response.data;
       
       setCurrentLectureId(lectureId);
       setCurrentTitle(data.title);
@@ -131,26 +130,20 @@ const ChatbotPage: React.FC = () => {
     setIsLoading(true);
     
     try {
-      // If we have a current lecture context, include it in the request
       const payload = {
         message: inputMessage,
         lectureId: currentLectureId
       };
 
-      const response = await fetch('http://localhost:5050/chat', {
-        method: 'POST',
+      const response = await api.post('/chat', payload, {
         headers: {
-          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${user.token}`,
         },
-        body: JSON.stringify(payload),
       });
-
-      if (!response.ok) throw new Error('Failed to get response');
-      const data = await response.json();
       
       const botResponse: Message = {
         id: Date.now().toString(),
-        text: data.response,
+        text: response.data.response,
         isBot: true,
         timestamp: new Date()
       };
@@ -158,7 +151,6 @@ const ChatbotPage: React.FC = () => {
       setMessages(prev => [...prev, botResponse]);
     } catch (error) {
       console.error('Error getting chat response:', error);
-      // Add error message to chat
       const errorMessage: Message = {
         id: Date.now().toString(),
         text: 'Sorry, I encountered an error processing your request. Please try again.',
@@ -178,28 +170,23 @@ const ChatbotPage: React.FC = () => {
       const formData = new FormData();
       formData.append('file', file);
 
-      const response = await fetch('http://localhost:5050/upload', {
-        method: 'POST',
-        body: formData,
+      await api.post('/lectures/update-lecture', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       });
-
-      if (!response.ok) throw new Error('Failed to upload file');
-      const data = await response.json();
       
       const botResponse: Message = {
         id: Date.now().toString(),
-        text: `I've processed your lecture notes: "${file.name}". You can now ask questions about this material.`,
+        text: `I've processed your lecture notes: "${file.name}". Let talk about it!`,
         isBot: true,
         timestamp: new Date()
       };
       
       setMessages(prev => [...prev, botResponse]);
       // Refresh the lectures list after upload
-      const lecturesResponse = await fetch('http://localhost:5050/lectures');
-      if (lecturesResponse.ok) {
-        const lecturesData = await lecturesResponse.json();
-        setPastLectures(lecturesData);
-      }
+      const lecturesResponse = await api.get('/lectures/update-lecture');
+      setPastLectures(lecturesResponse.data);
     } catch (error) {
       console.error('Error uploading file:', error);
       const errorMessage: Message = {
@@ -245,23 +232,11 @@ const ChatbotPage: React.FC = () => {
     
     if (currentLectureId) {
       try {
-        const response = await fetch(`http://localhost:5050/lectures/${currentLectureId}`, {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ title: tempTitle }),
-        });
-
-        if (!response.ok) throw new Error('Failed to update title');
-
+        await api.patch(`/lectures/${currentLectureId}`, { title: tempTitle });
         setCurrentTitle(tempTitle);
         // Refresh lectures list to update sidebar
-        const lecturesResponse = await fetch('http://localhost:5050/lectures');
-        if (lecturesResponse.ok) {
-          const data = await lecturesResponse.json();
-          setPastLectures(data);
-        }
+        const lecturesResponse = await api.get('/lectures');
+        setPastLectures(lecturesResponse.data);
       } catch (error) {
         console.error('Error updating title:', error);
       }
@@ -322,6 +297,7 @@ const ChatbotPage: React.FC = () => {
                   {pastLectures.length === 0 ? (
                     <p className="text-sm text-muted-foreground p-2">No lectures yet</p>
                   ) : (
+                    console.log(pastLectures),
                     pastLectures.map((lecture) => (
                       <button
                         key={lecture.id}

@@ -3,12 +3,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { BookOpenText, UserPlus, User, Lock, Mail } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import axios from 'axios';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Signup = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  
+  const { signup } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
+
   const [formData, setFormData] = useState({
     full_name: '',
     email: '',
@@ -22,14 +24,12 @@ const Signup = () => {
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5050/auth/signup/', formData);
-      if (response.status === 200) {
-        toast({
-          title: "Account created!",
-          description: "Your account has been created successfully.",
-        });
-        navigate('/chat');
-      }
+      await signup(formData.full_name, formData.email, formData.password);
+      toast({
+        title: "Account created!",
+        description: "Your account has been created successfully.",
+      });
+      navigate('/chat');
     } catch (error) {
       toast({
         title: "Error",
