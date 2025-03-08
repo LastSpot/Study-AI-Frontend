@@ -1,5 +1,6 @@
+
 import React from 'react';
-import { Star, GraduationCap, Building } from 'lucide-react';
+import { Star, GraduationCap, Building, BookOpen, Library, Award } from 'lucide-react';
 
 interface TestimonialProps {
   quote: string;
@@ -85,27 +86,27 @@ const Testimonials = () => {
   const universities = [
     {
       name: "Harvard University",
-      logo: <Building className="h-8 w-8 text-study-600" />,
+      logo: <Award className="h-8 w-8 text-study-600" />,
       delay: "delay-[100ms]"
     },
     {
       name: "University of Toronto",
-      logo: <GraduationCap className="h-8 w-8 text-study-600" />,
+      logo: <Library className="h-8 w-8 text-study-600" />,
       delay: "delay-[200ms]"
     },
     {
       name: "Boston University",
-      logo: <Building className="h-8 w-8 text-study-600" />,
+      logo: <BookOpen className="h-8 w-8 text-study-600" />,
       delay: "delay-[300ms]"
     },
     {
       name: "University of Connecticut",
-      logo: <GraduationCap className="h-8 w-8 text-study-600" />,
+      logo: <Building className="h-8 w-8 text-study-600" />,
       delay: "delay-[400ms]"
     },
     {
       name: "UMass Amherst",
-      logo: <Building className="h-8 w-8 text-study-600" />,
+      logo: <GraduationCap className="h-8 w-8 text-study-600" />,
       delay: "delay-[500ms]"
     }
   ];
