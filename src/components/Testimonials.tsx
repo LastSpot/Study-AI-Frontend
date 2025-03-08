@@ -65,6 +65,33 @@ const Testimonials = () => {
     }
   ];
 
+  const universities = [
+    {
+      name: "Harvard University",
+      logo: "https://1000logos.net/wp-content/uploads/2017/02/Harvard-Logo.png",
+    },
+    {
+      name: "UMass Amherst",
+      logo: "https://upload.wikimedia.org/wikipedia/commons/4/4f/UMass_Seal_Medium_PMS_202.png",
+    },
+    {
+      name: "University of Toronto",
+      logo: "https://upload.wikimedia.org/wikipedia/en/thumb/0/04/Utoronto_coa.svg/1280px-Utoronto_coa.svg.png",
+    },
+    {
+      name: "Boston University",
+      logo: "https://www.bu.edu/brand/files/2019/06/master_logo.gif",
+    },
+    {
+      name: "University of Connecticut",
+      logo: "https://brand.uconn.edu/wp-content/uploads/sites/14/2019/08/husky-logo-lockup-circleR.jpg",
+    },
+    {
+      name: "Northeastern University",
+      logo: "https://upload.wikimedia.org/wikipedia/commons/b/bb/NU_RGB_seal_R.png",
+    },
+  ];
+
   // Calculate the average rating
   const averageRating = (testimonials.reduce((sum, testimonial) => sum + testimonial.rating, 0) / testimonials.length).toFixed(1);
 
@@ -101,6 +128,27 @@ const Testimonials = () => {
           <div className="inline-flex items-center space-x-2 text-study-500 font-medium">
             <span className="bg-study-100 text-study-600 px-2.5 py-1 rounded-full text-sm">{averageRating}/5</span>
             <span>Average student satisfaction</span>
+          </div>
+        </div>
+
+        {/* University Logo Showcase */}
+        <div className="mt-20">
+          <h3 className="text-center text-2xl font-semibold text-gray-900 mb-8">
+            Our Students Come From Top Universities
+          </h3>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 items-center justify-items-center">
+            {universities.map((university, index) => (
+              <div 
+                key={index} 
+                className="relative h-[75%] w-full lg:filter lg:grayscale lg:hover:grayscale-0"
+              >
+                <img
+                  src={university.logo}
+                  alt={`${university.name} logo`}
+                  className="h-full w-full object-contain"
+                />
+              </div>
+            ))}
           </div>
         </div>
       </div>

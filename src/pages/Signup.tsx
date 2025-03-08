@@ -1,22 +1,42 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { BookOpenText, UserPlus, User, Lock, Mail } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import axios from 'axios';
 
 const Signup = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   
-  const handleSignup = (e: React.FormEvent) => {
+  const [formData, setFormData] = useState({
+    full_name: '',
+    email: '',
+    password: ''
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: "Account created!",
-      description: "Your account has been created successfully.",
-    });
-    // For simplicity, no authentication logic
-    navigate('/chat');
+    try {
+      const response = await axios.post('http://localhost:5050/auth/signup/', formData);
+      if (response.status === 200) {
+        toast({
+          title: "Account created!",
+          description: "Your account has been created successfully.",
+        });
+        navigate('/chat');
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error.response?.data?.detail || "An error occurred during signup.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -44,12 +64,13 @@ const Signup = () => {
                   </div>
                   <input
                     id="name"
-                    name="name"
+                    name="full_name"
                     type="text"
                     autoComplete="name"
                     placeholder="Enter your name"
                     className="pl-10 w-full h-12 bg-gray-50 border border-gray-300 rounded-xl focus:ring-study-500 focus:border-study-500 px-4"
                     required
+                    onChange={handleChange}
                   />
                 </div>
               </div>
@@ -70,6 +91,7 @@ const Signup = () => {
                     placeholder="Enter your email"
                     className="pl-10 w-full h-12 bg-gray-50 border border-gray-300 rounded-xl focus:ring-study-500 focus:border-study-500 px-4"
                     required
+                    onChange={handleChange}
                   />
                 </div>
               </div>
@@ -90,6 +112,7 @@ const Signup = () => {
                     placeholder="Create a password"
                     className="pl-10 w-full h-12 bg-gray-50 border border-gray-300 rounded-xl focus:ring-study-500 focus:border-study-500 px-4"
                     required
+                    onChange={handleChange}
                   />
                 </div>
               </div>
