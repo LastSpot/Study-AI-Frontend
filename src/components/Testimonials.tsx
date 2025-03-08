@@ -1,5 +1,5 @@
 import React from 'react';
-import { Star } from 'lucide-react';
+import { Star, GraduationCap, Building } from 'lucide-react';
 
 interface TestimonialProps {
   quote: string;
@@ -37,6 +37,23 @@ const Testimonial = ({ quote, name, title, rating, avatar, delay }: TestimonialP
   );
 };
 
+interface UniversityProps {
+  name: string;
+  logo: React.ReactNode;
+  delay: string;
+}
+
+const University = ({ name, logo, delay }: UniversityProps) => {
+  return (
+    <div className={`flex flex-col items-center animate-fade-in-up ${delay}`}>
+      <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white flex items-center justify-center shadow-sm border border-gray-100 mb-3">
+        {logo}
+      </div>
+      <p className="text-center text-sm font-medium text-gray-700">{name}</p>
+    </div>
+  );
+};
+
 const Testimonials = () => {
   const testimonials = [
     {
@@ -65,7 +82,34 @@ const Testimonials = () => {
     }
   ];
 
-  // Calculate the average rating
+  const universities = [
+    {
+      name: "Harvard University",
+      logo: <Building className="h-8 w-8 text-study-600" />,
+      delay: "delay-[100ms]"
+    },
+    {
+      name: "University of Toronto",
+      logo: <GraduationCap className="h-8 w-8 text-study-600" />,
+      delay: "delay-[200ms]"
+    },
+    {
+      name: "Boston University",
+      logo: <Building className="h-8 w-8 text-study-600" />,
+      delay: "delay-[300ms]"
+    },
+    {
+      name: "University of Connecticut",
+      logo: <GraduationCap className="h-8 w-8 text-study-600" />,
+      delay: "delay-[400ms]"
+    },
+    {
+      name: "UMass Amherst",
+      logo: <Building className="h-8 w-8 text-study-600" />,
+      delay: "delay-[500ms]"
+    }
+  ];
+
   const averageRating = (testimonials.reduce((sum, testimonial) => sum + testimonial.rating, 0) / testimonials.length).toFixed(1);
 
   return (
@@ -101,6 +145,28 @@ const Testimonials = () => {
           <div className="inline-flex items-center space-x-2 text-study-500 font-medium">
             <span className="bg-study-100 text-study-600 px-2.5 py-1 rounded-full text-sm">{averageRating}/5</span>
             <span>Average student satisfaction</span>
+          </div>
+        </div>
+
+        <div className="mt-24">
+          <div className="text-center mb-12">
+            <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
+              Trusted by Students at Top Universities
+            </h3>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              Students at leading educational institutions are using Study AI to excel in their courses.
+            </p>
+          </div>
+          
+          <div className="flex flex-wrap justify-center gap-8 md:gap-12 lg:gap-16 max-w-5xl mx-auto">
+            {universities.map((university, index) => (
+              <University
+                key={index}
+                name={university.name}
+                logo={university.logo}
+                delay={university.delay}
+              />
+            ))}
           </div>
         </div>
       </div>
