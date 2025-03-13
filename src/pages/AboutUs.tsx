@@ -87,23 +87,23 @@ const AboutUs = () => {
               We're a passionate team of students, educators, and technologists united by a common vision: 
               to make learning more engaging, effective, and enjoyable.
             </p>
-            <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+            <div className="grid md:grid-cols-1 gap-8 max-w-4xl mx-auto">
               {[
                 {
-                  name: "Alex Chen",
-                  role: "Founder & Vision",
-                  desc: "Computer Science student with a passion for AI and education. Alex experienced firsthand how traditional education often fails to inspire deep understanding."
+                  name: "Michael Le",
+                  role: "Founder & Vision & Developer",
+                  desc: "Computer Science student with a passion for AI, app development, and education. Michael experienced firsthand how traditional education often fails to inspire deep understanding."
                 },
-                {
-                  name: "Jamie Rodriguez",
-                  role: "Educational Content",
-                  desc: "Education major specializing in learning psychology. Jamie brings expertise in how students best absorb and retain information across different subjects."
-                },
-                {
-                  name: "Taylor Kim",
-                  role: "AI Development",
-                  desc: "Machine learning enthusiast working to make AI interactions feel natural and genuinely helpful for students across diverse learning needs."
-                }
+                // {
+                //   name: "Jamie Rodriguez",
+                //   role: "Educational Content",
+                //   desc: "Education major specializing in learning psychology. Jamie brings expertise in how students best absorb and retain information across different subjects."
+                // },
+                // {
+                //   name: "Taylor Kim",
+                //   role: "AI Development",
+                //   desc: "Machine learning enthusiast working to make AI interactions feel natural and genuinely helpful for students across diverse learning needs."
+                // }
               ].map((person, i) => (
                 <div key={i} className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 text-center">
                   <div className="w-20 h-20 bg-study-100 rounded-full flex items-center justify-center mx-auto mb-4">
