@@ -19,12 +19,12 @@ const AboutUs = () => {
           <div className="grid md:grid-cols-2 gap-12 items-center mb-20">
             <div>
               <h2 className="text-3xl font-bold mb-6 text-study-700">Our Story</h2>
-              <div className="prose prose-lg max-w-none">
-                <p className="mb-4">
+              <div className="prose prose-lg max-w-none text-gray-700 leading-relaxed">
+                <p className="mb-6">
                   Study AI was born from a shared frustration: traditional studying often focuses on memorization rather than understanding. 
                   As students ourselves, we experienced firsthand the limitations of conventional learning methods.
                 </p>
-                <p className="mb-4">
+                <p className="mb-6">
                   We envisioned a different approach—one where learning feels like an engaging conversation with a knowledgeable friend 
                   rather than a tedious task of memorizing facts and formulas.
                 </p>
@@ -59,12 +59,12 @@ const AboutUs = () => {
                 <Target className="h-12 w-12 text-study-600 mr-4" />
                 <h3 className="text-2xl font-bold text-study-700">Revolutionizing Education</h3>
               </div>
-              <div className="prose prose-lg max-w-3xl mx-auto">
-                <p className="mb-4">
+              <div className="prose prose-lg max-w-3xl mx-auto text-gray-700 leading-relaxed">
+                <p className="mb-6">
                   We believe education is due for transformation. Our mission is to create a paradigm shift 
                   in how students approach learning—moving from rote memorization to genuine understanding.
                 </p>
-                <p className="mb-4">
+                <p className="mb-6">
                   Study AI aims to democratize access to personalized learning experiences that adapt to each 
                   student's unique needs, learning style, and pace. We envision a future where education is not a 
                   one-size-fits-all process but a personalized journey.
@@ -83,7 +83,7 @@ const AboutUs = () => {
             <div className="flex justify-center mb-8">
               <Users className="h-16 w-16 text-study-500" />
             </div>
-            <p className="text-center text-xl max-w-2xl mx-auto mb-12">
+            <p className="text-center text-xl max-w-2xl mx-auto mb-12 text-gray-700">
               We're a passionate team of students, educators, and technologists united by a common vision: 
               to make learning more engaging, effective, and enjoyable.
             </p>
