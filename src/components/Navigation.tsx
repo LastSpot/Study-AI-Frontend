@@ -42,24 +42,18 @@ const Navigation = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <a 
-              href="#features" 
+            <Link 
+              to="/" 
               className="text-gray-700 hover:text-study-500 transition-colors subtle-underline"
             >
               Features
-            </a>
-            <a 
-              href="#how-it-works" 
+            </Link>
+            <Link 
+              to="/pricing" 
               className="text-gray-700 hover:text-study-500 transition-colors subtle-underline"
             >
-              How it Works
-            </a>
-            <a 
-              href="#testimonials" 
-              className="text-gray-700 hover:text-study-500 transition-colors subtle-underline"
-            >
-              Testimonials
-            </a>
+              Pricing
+            </Link>
           </nav>
 
           <div className="hidden md:flex items-center space-x-4">
@@ -89,27 +83,20 @@ const Navigation = () => {
       {/* Mobile Navigation */}
       {isMenuOpen && (
         <div className="md:hidden absolute top-full left-0 right-0 bg-white shadow-md p-4 flex flex-col space-y-4 animate-fade-in">
-          <a 
-            href="#features" 
+          <Link 
+            to="/" 
             className="text-gray-700 hover:text-study-500 transition-colors py-2"
             onClick={() => setIsMenuOpen(false)}
           >
             Features
-          </a>
-          <a 
-            href="#how-it-works" 
+          </Link>
+          <Link 
+            to="/pricing" 
             className="text-gray-700 hover:text-study-500 transition-colors py-2"
             onClick={() => setIsMenuOpen(false)}
           >
-            How it Works
-          </a>
-          <a 
-            href="#testimonials" 
-            className="text-gray-700 hover:text-study-500 transition-colors py-2"
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Testimonials
-          </a>
+            Pricing
+          </Link>
           <div className="flex flex-col space-y-2 pt-2 border-t">
             <Button variant="ghost" className="text-gray-700 justify-center" asChild>
               <Link to="/login">Login</Link>
