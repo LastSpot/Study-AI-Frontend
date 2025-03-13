@@ -41,26 +41,26 @@ const Testimonials = () => {
   const testimonials = [
     {
       quote: "Study AI has been a game-changer for my exam preparation. Having a chatbot that understands my specific lecture material makes studying so much more efficient.",
-      name: "Emma Johnson",
-      title: "Computer Science Student",
+      name: "Tintin Nguyen",
+      title: "PhD Astronomy Student",
       rating: 5,
-      avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=256&q=80",
+      avatar: "https://as2.ftcdn.net/v2/jpg/00/65/77/27/1000_F_65772719_A1UV5kLi5nCEWI0BNLLiFaBPEkUbv5Fv.jpg",
       delay: "delay-[100ms]"
     },
     {
       quote: "I was struggling with complex physics concepts until I started using Study AI. The contextual understanding is impressive - it's like having a tutor who read my notes!",
-      name: "Michael Chen",
+      name: "Kevin Li",
       title: "Physics Major",
       rating: 5,
-      avatar: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=256&q=80",
+      avatar: "https://as2.ftcdn.net/v2/jpg/00/65/77/27/1000_F_65772719_A1UV5kLi5nCEWI0BNLLiFaBPEkUbv5Fv.jpg",
       delay: "delay-[300ms]"
     },
     {
-      quote: "As a medical student with mountains of lecture notes, Study AI helps me quickly find information and understand difficult concepts. It's indispensable for my studies.",
-      name: "Sarah Patel",
-      title: "Medical Student",
+      quote: "Study AI has revolutionized my study routine! I used to spend hours sifting through PDFs, but now I get instant summaries and answers. It's like having a super-efficient study buddy.",
+      name: "Eira Wang",
+      title: "Pre-med Student",
       rating: 4,
-      avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=256&q=80",
+      avatar: "https://as2.ftcdn.net/v2/jpg/00/65/77/27/1000_F_65772719_A1UV5kLi5nCEWI0BNLLiFaBPEkUbv5Fv.jpg",
       delay: "delay-[500ms]"
     }
   ];
