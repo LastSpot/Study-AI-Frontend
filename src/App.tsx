@@ -14,6 +14,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import ChatbotPage from "./pages/ChatbotPage";
 import NotFound from "./pages/NotFound";
 import Pricing from "./pages/Pricing";
+import AboutUs from "./pages/AboutUs";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +32,7 @@ const App = () => (
               <Route path="/signup" element={<Signup />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/pricing" element={<Pricing />} />
+              <Route path="/about" element={<AboutUs />} />
               <Route
                 path="/chat"
                 element={

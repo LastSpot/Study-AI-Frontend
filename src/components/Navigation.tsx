@@ -54,6 +54,12 @@ const Navigation = () => {
             >
               Pricing
             </Link>
+            <Link 
+              to="/about" 
+              className="text-gray-700 hover:text-study-500 transition-colors subtle-underline"
+            >
+              About Us
+            </Link>
           </nav>
 
           <div className="hidden md:flex items-center space-x-4">
@@ -96,6 +102,13 @@ const Navigation = () => {
             onClick={() => setIsMenuOpen(false)}
           >
             Pricing
+          </Link>
+          <Link 
+            to="/about" 
+            className="text-gray-700 hover:text-study-500 transition-colors py-2"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            About Us
           </Link>
           <div className="flex flex-col space-y-2 pt-2 border-t">
             <Button variant="ghost" className="text-gray-700 justify-center" asChild>
