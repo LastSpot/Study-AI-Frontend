@@ -320,7 +320,7 @@ const ChatbotPage: React.FC = () => {
             <Button variant="ghost" className="w-full justify-start text-foreground" asChild>
               <Link to="/">
                 <LogOut className="h-5 w-5 mr-2" />
-                <span className={isSidebarOpen ? 'block' : 'hidden'}>Sign out</span>
+                <span className={isSidebarOpen ? 'block' : 'hidden'}>Log out</span>
               </Link>
             </Button>
           </div>

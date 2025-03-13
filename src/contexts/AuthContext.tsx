@@ -1,9 +1,17 @@
-import React, { createContext, useContext, useState } from 'react';
-import axios from 'axios';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import axios, { AxiosError } from 'axios';
+
+interface User {
+  // Define the properties of the user object here
+  full_name: string;
+  email: string;
+  token: string;
+  // Add other properties as needed
+}
 
 interface AuthContextType {
   isAuthenticated: boolean;
-  user: any | null;
+  user: User | null;
   login: (email: string, password: string) => Promise<void>;
   signup: (full_name: string, email: string, password: string) => Promise<void>;
   logout: () => void;
@@ -14,8 +22,8 @@ interface AuthContextType {
 
 // Create axios instance with default config
 const api = axios.create({
-  baseURL: 'http://localhost:5050',
-  withCredentials: true,
+  baseURL: 'http://localhost:8000',
+  withCredentials: true, // This is important for sending/receiving cookies
   headers: {
     'Content-Type': 'application/json',
   }
@@ -25,26 +33,30 @@ const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState<any | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   const checkAuthStatus = async () => {
     try {
       const response = await api.get('/auth/status');
-  
-      if (response.status === 200) {
-        setUser(response.data.user);
-        setIsAuthenticated(true);
-      } else {
-        console.log('User not authenticated');
+      setUser(response.data.user);
+      setIsAuthenticated(true);
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        // 401 is an expected response when not authenticated
+        if (error.response?.status === 401) {
+          setUser(null);
+          setIsAuthenticated(false);
+        } else {
+          console.error('Auth check failed:', error);
+          setUser(null);
+          setIsAuthenticated(false);
+        }
       }
-    } catch (error) {
-      console.error('Auth check failed:', error);
     } finally {
       setLoading(false);
     }
   };
-  
 
   const signup = async (full_name: string, email: string, password: string) => {
     try {
@@ -55,11 +67,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       });
 
       if (response.status === 200) {
-        const { user, access_token } = response.data;
-        // Set token from response body
-        if (access_token) {
-          api.defaults.headers.common['Authorization'] = `Bearer ${access_token}`;
-        }
+        const { user } = response.data;
         setUser(user);
         setIsAuthenticated(true);
       } else {
@@ -79,11 +87,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       });
 
       if (response.status === 200) {
-        const { user, access_token } = response.data;
-        // Set token from response body
-        if (access_token) {
-          api.defaults.headers.common['Authorization'] = `Bearer ${access_token}`;
-        }
+        const { user } = response.data;
         setUser(user);
         setIsAuthenticated(true);
       } else {
@@ -98,13 +102,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const logout = async () => {
     try {
       await api.post('/auth/logout');
-    } catch (error) {
-      console.error('Logout failed:', error);
-    } finally {
-      // Remove the Authorization header
-      delete api.defaults.headers.common['Authorization'];
       setUser(null);
       setIsAuthenticated(false);
+    } catch (error) {
+      console.error('Logout failed:', error);
+      throw error;
     }
   };
 

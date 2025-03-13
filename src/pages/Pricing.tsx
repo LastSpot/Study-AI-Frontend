@@ -1,10 +1,12 @@
-
 import React from 'react';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 import { CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
+import { GraduationCap, MessageSquare, Book, Lightbulb } from 'lucide-react';
+
+type ButtonVariant = "default" | "outline" | "secondary";
 
 const PricingTier = ({ 
   title, 
@@ -49,7 +51,7 @@ const PricingTier = ({
         </ul>
       </div>
       <Button 
-        variant={buttonVariant as any} 
+        variant={buttonVariant as ButtonVariant} 
         size="lg" 
         className={`w-full ${buttonVariant === "default" ? "bg-study-500 hover:bg-study-600" : ""}`}
         asChild
@@ -83,10 +85,10 @@ const Pricing = () => {
                 description="Get started with Study AI and experience the basics."
                 features={[
                   "Basic document analysis",
-                  "Limited questions per day (10)",
+                  "Upload up to 10 documents per day",
+                  "Unlimited questions",
                   "Standard response speed",
-                  "Access to general knowledge base",
-                  "Web-based platform only"
+                  "Access to basic models"
                 ]}
                 buttonText="Get Started"
                 buttonVariant="outline"
@@ -97,12 +99,12 @@ const Pricing = () => {
                 price="$5"
                 description="Perfect for the serious student with regular study needs."
                 features={[
-                  "Upload up to 20 documents",
-                  "Unlimited questions",
+                  "Everything in Basic, plus more",
+                  "Upload up to 50 documents per day",
                   "Faster response time",
-                  "Access to specialized subject knowledge",
+                  "Access to premium models",
                   "Cross-reference across documents",
-                  "Mobile app access"
+                  "Flashcard generation",
                 ]}
                 buttonText="Start Free Trial"
                 recommended={true}
@@ -113,12 +115,10 @@ const Pricing = () => {
                 price="$10"
                 description="For power users who need comprehensive study assistance."
                 features={[
+                  "Everything in Student, plus more",
                   "Unlimited document uploads",
                   "Priority response speed",
                   "Advanced cross-document analysis",
-                  "Citation generation",
-                  "Study progress tracking",
-                  "Flashcard generation",
                   "Custom knowledge integration",
                   "Early access to new features"
                 ]}
@@ -133,11 +133,26 @@ const Pricing = () => {
               </h3>
               <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
                 We offer special pricing for schools, universities, and educational organizations.
-                Contact our team to learn more about our educational partnerships.
+                Contact our team to learn more about our educational partnerships. Our contact can be found below.
               </p>
-              <Button variant="outline" size="lg">
+              {/* <Button variant="outline" size="lg">
                 Contact Sales
-              </Button>
+              </Button> */}
+            </div>
+
+            <div className="mt-16 grid md:grid-cols-4 gap-6">
+              {[
+                { icon: <GraduationCap className="h-8 w-8 text-study-600" />, title: "Student-Centered", desc: "Built by students, for students" },
+                { icon: <MessageSquare className="h-8 w-8 text-study-600" />, title: "Conversational", desc: "Learning through dialogue" },
+                { icon: <Book className="h-8 w-8 text-study-600" />, title: "Deep Learning", desc: "Understanding, not memorizing" },
+                { icon: <Lightbulb className="h-8 w-8 text-study-600" />, title: "Innovative", desc: "Reimagining education" }
+              ].map((item, i) => (
+                <div key={i} className="bg-white p-4 rounded-xl shadow-sm">
+                  <div className="mb-3">{item.icon}</div>
+                  <h3 className="font-bold text-study-700 mb-1">{item.title}</h3>
+                  <p className="text-sm text-gray-600">{item.desc}</p>
+                </div>
+              ))}
             </div>
           </div>
         </section>

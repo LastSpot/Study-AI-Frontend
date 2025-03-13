@@ -1,9 +1,15 @@
 import React, { useState } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useNavigate, useLocation, Location } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { BookOpenText, LogIn, User, Lock } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
+
+interface LocationState {
+  from: {
+    pathname: string;
+  };
+}
 
 const Login = () => {
   const navigate = useNavigate();
@@ -14,7 +20,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   
-  const from = (location.state as any)?.from?.pathname || '/chat';
+  const from = (location.state as LocationState)?.from?.pathname || '/chat';
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -104,7 +110,7 @@ const Login = () => {
               ) : (
                 <>
                   <LogIn className="h-5 w-5 mr-2" />
-                  Sign in
+                  Log in
                 </>
               )}
             </Button>

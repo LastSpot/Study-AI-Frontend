@@ -68,7 +68,7 @@ const Signup = () => {
                     type="text"
                     autoComplete="name"
                     placeholder="Enter your name"
-                    className="pl-10 w-full h-12 bg-gray-50 border border-gray-300 rounded-xl focus:ring-study-500 focus:border-study-500 px-4"
+                    className="pl-10 w-full h-12 bg-gray-50 border border-gray-300 rounded-xl focus:ring-study-500 focus:border-study-500 px-4 text-black"
                     required
                     onChange={handleChange}
                   />
@@ -89,7 +89,7 @@ const Signup = () => {
                     type="email"
                     autoComplete="email"
                     placeholder="Enter your email"
-                    className="pl-10 w-full h-12 bg-gray-50 border border-gray-300 rounded-xl focus:ring-study-500 focus:border-study-500 px-4"
+                    className="pl-10 w-full h-12 bg-gray-50 border border-gray-300 rounded-xl focus:ring-study-500 focus:border-study-500 px-4 text-black"
                     required
                     onChange={handleChange}
                   />
@@ -110,7 +110,7 @@ const Signup = () => {
                     type="password"
                     autoComplete="new-password"
                     placeholder="Create a password"
-                    className="pl-10 w-full h-12 bg-gray-50 border border-gray-300 rounded-xl focus:ring-study-500 focus:border-study-500 px-4"
+                    className="pl-10 w-full h-12 bg-gray-50 border border-gray-300 rounded-xl focus:ring-study-500 focus:border-study-500 px-4 text-black"
                     required
                     onChange={handleChange}
                   />

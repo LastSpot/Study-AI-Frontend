@@ -16,7 +16,7 @@ const Footer = () => {
               <span className="text-xl font-display font-medium text-gray-900">Study AI</span>
             </div>
             <p className="text-gray-600 mb-6">
-              Revolutionize your study sessions with an AI chatbot that understands your specific lecture material.
+              Transform your study sessions with an AI chatbot tailored to your lecture material.
             </p>
             <div className="flex space-x-4">
               <a href="https://www.instagram.com" className="text-gray-500 hover:text-study-500 transition-colors">

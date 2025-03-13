@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { HelpCircle } from 'lucide-react';
 import {
@@ -63,10 +62,10 @@ const FAQ = () => {
                   <div className="px-1 py-2">
                     <p className="text-base md:text-lg font-normal tracking-wide">
                       {faq.answer.split('. ').map((sentence, i, arr) => (
-                        <React.Fragment key={i}>
+                        <span key={i}>
                           {sentence}{i < arr.length - 1 ? '. ' : ''}
                           {i < arr.length - 1 && (i + 1) % 2 === 0 && <br className="hidden md:block" />}
-                        </React.Fragment>
+                        </span>
                       ))}
                     </p>
                   </div>
