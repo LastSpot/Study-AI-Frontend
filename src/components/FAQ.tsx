@@ -59,8 +59,17 @@ const FAQ = () => {
                 <AccordionTrigger className="text-left text-lg font-medium text-gray-900">
                   {faq.question}
                 </AccordionTrigger>
-                <AccordionContent className="text-gray-700">
-                  {faq.answer}
+                <AccordionContent className="text-gray-700 leading-relaxed">
+                  <div className="px-1 py-2">
+                    <p className="text-base md:text-lg font-normal tracking-wide">
+                      {faq.answer.split('. ').map((sentence, i, arr) => (
+                        <React.Fragment key={i}>
+                          {sentence}{i < arr.length - 1 ? '. ' : ''}
+                          {i < arr.length - 1 && (i + 1) % 2 === 0 && <br className="hidden md:block" />}
+                        </React.Fragment>
+                      ))}
+                    </p>
+                  </div>
                 </AccordionContent>
               </AccordionItem>
             ))}
