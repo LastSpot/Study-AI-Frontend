@@ -170,8 +170,8 @@ const Hero = () => {
       <div className="container mx-auto px-4 md:px-6 mt-16">
         <div className="bg-study-50 rounded-2xl p-8 md:p-12 shadow-sm">
           <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">Stay updated with lifetime access</h2>
-            <p className="text-gray-600 mb-8">Join our waitlist to gain lifetime access.</p>
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">Interested in using Study AI development?</h2>
+            <p className="text-gray-600 mb-8">Let us know your email and we'll keep you updated.</p>
             <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
               <input
                 type="email"

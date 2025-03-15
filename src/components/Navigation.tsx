@@ -48,12 +48,12 @@ const Navigation = () => {
             >
               Features
             </Link>
-            <Link 
+            {/* <Link 
               to="/pricing" 
               className="text-gray-700 hover:text-study-500 transition-colors subtle-underline"
             >
               Pricing
-            </Link>
+            </Link> */}
             <Link 
               to="/about" 
               className="text-gray-700 hover:text-study-500 transition-colors subtle-underline"

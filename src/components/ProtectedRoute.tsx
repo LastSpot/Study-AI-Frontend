@@ -13,8 +13,6 @@ export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     checkAuth();
   }, []);
 
-  console.log(isAuthenticated);
-
   if (loading) {
     // You might want to show a loading spinner here
     return (
