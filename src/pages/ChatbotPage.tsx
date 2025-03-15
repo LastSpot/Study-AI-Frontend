@@ -46,11 +46,6 @@ const ChatbotPage: React.FC = () => {
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [tempTitle, setTempTitle] = useState("");
   const { theme, setTheme } = useTheme();
-  
-  // Add effect to monitor title changes
-  useEffect(() => {
-    console.log('Current title updated to:', currentTitle);
-  }, [currentTitle]);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
@@ -66,7 +61,6 @@ const ChatbotPage: React.FC = () => {
         new Date(b.created_at || '').getTime() - new Date(a.created_at || '').getTime()
       );
       
-      console.log('Sorted lessons:', sortedLessons);
       setPastlessons(sortedLessons);
     } catch (error) {
       console.error('Error fetching lessons:', error);
@@ -83,7 +77,6 @@ const ChatbotPage: React.FC = () => {
       setIsLoading(true);
       const response = await api.get(`/lessons/${lessonId}`);
       const lesson = response.data;
-      console.log('Selected lesson data:', lesson);
       
       if (!lesson || !lesson.title) {  // Only check for required fields
         console.error('Invalid lesson data received:', lesson);
@@ -93,7 +86,6 @@ const ChatbotPage: React.FC = () => {
       // Update the current lecture context
       setCurrentLectureId(lessonId);  // Use the ID we received as parameter
       setCurrentTitle(lesson.title);
-      console.log('Set current title to:', lesson.title);
 
       // Clear previous chat and add context switch message
       const contextMessage: Message = {
@@ -233,12 +225,9 @@ const ChatbotPage: React.FC = () => {
       });
       
       const newLesson = response.data;
-      console.log('New lesson object:', newLesson);
       
       // Update current lecture ID and title
-      console.log('Setting currentLectureId to:', newLesson._id);
       setCurrentLectureId(newLesson._id);
-      console.log('Setting currentTitle to:', newLesson.title);
       setCurrentTitle(newLesson.title);
       
       const botResponse: Message = {
