@@ -41,7 +41,7 @@ interface AuthContextType {
 
 // Configure axios instance with authentication settings
 const api = axios.create({
-  baseURL: 'http://localhost:8000',
+  baseURL: import.meta.env.VITE_BACKEND_URL,
   withCredentials: true, // Enable cookie-based authentication
   headers: {
     'Content-Type': 'application/json',
