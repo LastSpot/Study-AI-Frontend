@@ -176,7 +176,7 @@ const Hero = () => {
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-study-500 focus:border-study-500"
+                className="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-study-500 focus:border-study-500 text-black"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
