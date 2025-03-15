@@ -1,15 +1,26 @@
-
+/**
+ * Navigation Component
+ * Renders the main navigation bar of the application.
+ * Features:
+ * - Responsive design with mobile menu
+ * - Background changes on scroll
+ * - Smooth transitions for visual effects
+ */
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Menu, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Navigation = () => {
+  // Track scroll position to change navbar appearance
   const [isScrolled, setIsScrolled] = useState(false);
+  // Track mobile menu state
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  // Add scroll event listener to change navbar appearance
   useEffect(() => {
     const handleScroll = () => {
+      // Add background and shadow when page is scrolled
       if (window.scrollY > 10) {
         setIsScrolled(true);
       } else {
@@ -18,11 +29,13 @@ const Navigation = () => {
     };
 
     window.addEventListener('scroll', handleScroll);
+    // Clean up event listener on component unmount
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
+  // Toggle mobile menu visibility
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };

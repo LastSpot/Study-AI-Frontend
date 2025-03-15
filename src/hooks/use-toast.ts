@@ -1,3 +1,12 @@
+/**
+ * Toast Notification System
+ * Provides a global toast notification system with a reducer pattern for state management.
+ * Features:
+ * - Multiple toast types (default, destructive)
+ * - Automatic removal after timeout
+ * - Custom positioning
+ * - Action support
+ */
 import * as React from "react"
 
 import type {
@@ -6,8 +15,9 @@ import type {
 } from "@/components/ui/toast"
 
 const TOAST_LIMIT = 1
-const TOAST_REMOVE_DELAY = 1000000
+const TOAST_REMOVE_DELAY = 1000
 
+// Type definitions for toast state management
 type ToasterToast = ToastProps & {
   id: string
   title?: React.ReactNode
@@ -15,46 +25,46 @@ type ToasterToast = ToastProps & {
   action?: ToastActionElement
 }
 
-const actionTypes = {
-  ADD_TOAST: "ADD_TOAST",
-  UPDATE_TOAST: "UPDATE_TOAST",
-  DISMISS_TOAST: "DISMISS_TOAST",
-  REMOVE_TOAST: "REMOVE_TOAST",
-} as const
+// Type for creating a new toast (without id)
+type Toast = Omit<ToasterToast, "id">
 
-let count = 0
-
-function genId() {
-  count = (count + 1) % Number.MAX_SAFE_INTEGER
-  return count.toString()
+// Possible actions for the toast reducer
+type ActionType = {
+  type: "ADD_TOAST"
+  toast: ToasterToast
+} | {
+  type: "UPDATE_TOAST"
+  toast: Partial<ToasterToast> & { id: string }
+} | {
+  type: "DISMISS_TOAST"
+  toastId?: string
+} | {
+  type: "REMOVE_TOAST"
+  toastId: string
 }
-
-type ActionType = typeof actionTypes
-
-type Action =
-  | {
-      type: ActionType["ADD_TOAST"]
-      toast: ToasterToast
-    }
-  | {
-      type: ActionType["UPDATE_TOAST"]
-      toast: Partial<ToasterToast>
-    }
-  | {
-      type: ActionType["DISMISS_TOAST"]
-      toastId?: ToasterToast["id"]
-    }
-  | {
-      type: ActionType["REMOVE_TOAST"]
-      toastId?: ToasterToast["id"]
-    }
 
 interface State {
   toasts: ToasterToast[]
 }
 
+// Initial state for the toast system
+const memoryState: State = { toasts: [] }
+
+// Keep track of subscribers to state changes
+const listeners: ((state: State) => void)[] = []
+
+// Current state of the toast system
+let state: State = memoryState
+
+/**
+ * Manages timeouts for removing toasts after they're dismissed
+ */
 const toastTimeouts = new Map<string, ReturnType<typeof setTimeout>>()
 
+/**
+ * Adds a toast to the removal queue after it's dismissed
+ * @param toastId - ID of the toast to be removed
+ */
 const addToRemoveQueue = (toastId: string) => {
   if (toastTimeouts.has(toastId)) {
     return
@@ -71,7 +81,12 @@ const addToRemoveQueue = (toastId: string) => {
   toastTimeouts.set(toastId, timeout)
 }
 
-export const reducer = (state: State, action: Action): State => {
+/**
+ * Reducer function for managing toast state
+ * @param state - Current state of the toast system
+ * @param action - Action to be performed
+ */
+function reducer(state: State, action: ActionType): State {
   switch (action.type) {
     case "ADD_TOAST":
       return {
@@ -90,28 +105,26 @@ export const reducer = (state: State, action: Action): State => {
     case "DISMISS_TOAST": {
       const { toastId } = action
 
-      // ! Side effects ! - This could be extracted into a dismissToast() action,
-      // but I'll keep it here for simplicity
-      if (toastId) {
-        addToRemoveQueue(toastId)
-      } else {
-        state.toasts.forEach((toast) => {
-          addToRemoveQueue(toast.id)
-        })
+      // Dismiss all toasts if no ID is provided
+      if (toastId === undefined) {
+        return {
+          ...state,
+          toasts: state.toasts.map((t) => ({
+            ...t,
+            open: false,
+          })),
+        }
       }
 
+      // Dismiss a specific toast by ID
       return {
         ...state,
         toasts: state.toasts.map((t) =>
-          t.id === toastId || toastId === undefined
-            ? {
-                ...t,
-                open: false,
-              }
-            : t
+          t.id === toastId ? { ...t, open: false } : t
         ),
       }
     }
+
     case "REMOVE_TOAST":
       if (action.toastId === undefined) {
         return {
@@ -126,19 +139,29 @@ export const reducer = (state: State, action: Action): State => {
   }
 }
 
-const listeners: Array<(state: State) => void> = []
-
-let memoryState: State = { toasts: [] }
-
-function dispatch(action: Action) {
-  memoryState = reducer(memoryState, action)
+/**
+ * Dispatches actions to update toast state
+ * @param action - Action to be dispatched
+ */
+function dispatch(action: ActionType) {
+  state = reducer(state, action)
   listeners.forEach((listener) => {
-    listener(memoryState)
+    listener(state)
   })
 }
 
-type Toast = Omit<ToasterToast, "id">
+/**
+ * Generates a unique ID for a toast
+ */
+function genId() {
+  return Math.random().toString(36).substr(2, 9)
+}
 
+/**
+ * Creates a new toast notification
+ * @param props - Toast properties including title, description, and action
+ * @returns Object with methods to control the toast
+ */
 function toast({ ...props }: Toast) {
   const id = genId()
 
@@ -168,6 +191,10 @@ function toast({ ...props }: Toast) {
   }
 }
 
+/**
+ * Hook for using the toast system
+ * @returns Object containing current toast state and methods to create/dismiss toasts
+ */
 function useToast() {
   const [state, setState] = React.useState<State>(memoryState)
 

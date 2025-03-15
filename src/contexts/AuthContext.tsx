@@ -1,14 +1,33 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import axios, { AxiosError } from 'axios';
+/**
+ * AuthContext and Provider
+ * Manages authentication state and provides authentication-related functionality throughout the application.
+ * Features:
+ * - User authentication state management
+ * - Login/Signup/Logout functionality
+ * - Authentication status checking
+ * - Axios instance with authentication configuration
+ */
+import React, { createContext, useContext, useState } from 'react';
+import axios from 'axios';
 
+// Define the structure for User data
 interface User {
-  // Define the properties of the user object here
-  full_name: string;
+  id: string;
   email: string;
-  token: string;
-  // Add other properties as needed
+  full_name: string;
 }
 
+/**
+ * AuthContext interface defining all authentication-related functionality
+ * @property isAuthenticated - Boolean indicating if a user is currently authenticated
+ * @property user - Current user object or null if not authenticated
+ * @property login - Function to authenticate user with email/password
+ * @property signup - Function to create and authenticate new user
+ * @property logout - Function to end the current session
+ * @property loading - Boolean indicating if auth operations are in progress
+ * @property api - Configured axios instance for authenticated requests
+ * @property checkAuthStatus - Function to verify current authentication status
+ */
 interface AuthContextType {
   isAuthenticated: boolean;
   user: User | null;
@@ -20,22 +39,31 @@ interface AuthContextType {
   checkAuthStatus: () => Promise<void>;
 }
 
-// Create axios instance with default config
+// Configure axios instance with authentication settings
 const api = axios.create({
   baseURL: 'http://localhost:8000',
-  withCredentials: true, // This is important for sending/receiving cookies
+  withCredentials: true, // Enable cookie-based authentication
   headers: {
     'Content-Type': 'application/json',
   }
 });
 
+// Create the context with null as initial value
 const AuthContext = createContext<AuthContextType | null>(null);
 
+/**
+ * AuthProvider component
+ * Wraps the application and provides authentication state and functions to all children
+ */
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
+  /**
+   * Verifies the current authentication status with the backend
+   * Updates the auth state based on the response
+   */
   const checkAuthStatus = async () => {
     try {
       const response = await api.get('/auth/status');
@@ -43,7 +71,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setIsAuthenticated(true);
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
-        // 401 is an expected response when not authenticated
         if (error.response?.status === 401) {
           setUser(null);
           setIsAuthenticated(false);
@@ -58,6 +85,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  /**
+   * Creates a new user account and authenticates them
+   */
   const signup = async (full_name: string, email: string, password: string) => {
     try {
       const response = await api.post('/auth/signup', { 
@@ -79,6 +109,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  /**
+   * Authenticates an existing user
+   */
   const login = async (email: string, password: string) => {
     try {
       const response = await api.post('/auth/login', { 
@@ -99,6 +132,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  /**
+   * Ends the current user session
+   */
   const logout = async () => {
     try {
       await api.post('/auth/logout');
@@ -117,6 +153,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   );
 };
 
+/**
+ * Custom hook to access authentication context
+ * @throws Error if used outside of AuthProvider
+ * @returns AuthContextType object containing auth state and functions
+ */
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
