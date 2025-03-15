@@ -11,7 +11,7 @@ export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
       await checkAuthStatus();
     };
     checkAuth();
-  });
+  }, []);
 
   if (loading) {
     // You might want to show a loading spinner here

@@ -70,7 +70,7 @@ const ChatbotPage: React.FC = () => {
   // Fetch past lessons
   useEffect(() => {
     fetchPastlessons();
-  });
+  }, []);
 
   const handlelessonselect = async (lessonId: string) => {
     try {
