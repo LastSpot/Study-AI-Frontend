@@ -2,6 +2,11 @@ import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
 
 const NotFound = () => {
+
+  useEffect(() => {
+    document.title = "404 Not Found";
+  }, []);
+
   const location = useLocation();
 
   useEffect(() => {

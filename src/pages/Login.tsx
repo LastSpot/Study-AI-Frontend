@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation, Location } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { BookOpenText, LogIn, User, Lock } from 'lucide-react';
+import { BookOpenText, LogIn, User, Lock, Eye, EyeOff } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -12,6 +12,10 @@ interface LocationState {
 }
 
 const Login = () => {
+  useEffect(() => {
+    document.title = "Login";
+  }, []);
+
   const navigate = useNavigate();
   const location = useLocation();
   const { toast } = useToast();
@@ -19,6 +23,7 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   
   const from = (location.state as LocationState)?.from?.pathname || '/chat';
 
@@ -28,19 +33,27 @@ const Login = () => {
 
     try {
       await login(email, password);
+      
+      // Ensure the loading state is cleared before navigation
+      setIsLoading(false);
+      
       toast({
         title: "Success!",
         description: "You've been logged in successfully.",
       });
-      navigate(from, { replace: true });
+
+      // Force a small delay to ensure state updates are processed
+      setTimeout(() => {
+        navigate('/chat', { replace: true });
+      }, 100);
+      
     } catch (error) {
+      setIsLoading(false);
       toast({
         title: "Error",
         description: "Invalid email or password.",
         variant: "destructive",
       });
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -87,14 +100,24 @@ const Login = () => {
                 <input
                   id="password"
                   name="password"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary text-sm dark:bg-gray-700 dark:text-white"
+                  className="appearance-none block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary text-sm dark:bg-gray-700 dark:text-white pr-10"
                   placeholder="Enter your password"
                 />
-                <Lock className="absolute right-3 top-2.5 h-5 w-5 text-gray-400" />
+                <button
+                  type="button"
+                  className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? (
+                    <EyeOff className="h-5 w-5" />
+                  ) : (
+                    <Eye className="h-5 w-5" />
+                  )}
+                </button>
               </div>
             </div>
           </div>

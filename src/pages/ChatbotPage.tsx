@@ -36,6 +36,10 @@ const INITIAL_MESSAGES: Message[] = [
 ];
 
 const ChatbotPage: React.FC = () => {
+  useEffect(() => {
+    document.title = "Study AI";
+  }, []);
+
   // Authentication and API context
   const { user, api } = useAuth();
 

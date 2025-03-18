@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import Navigation from '../components/Navigation';
 import Hero from '../components/Hero';
 import Features from '../components/Features';
@@ -9,6 +9,11 @@ import FAQ from '../components/FAQ';
 import Footer from '../components/Footer';
 
 const Index = () => {
+
+  useEffect(() => {
+    document.title = "Study AI - Homepage";
+  }, []);
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navigation />
