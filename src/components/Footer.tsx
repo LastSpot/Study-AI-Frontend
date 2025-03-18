@@ -1,5 +1,6 @@
 import React from 'react';
-import { Instagram, Linkedin, Mail } from 'lucide-react';
+import { Mail } from 'lucide-react';
+import { FaLinkedin, FaInstagram } from 'react-icons/fa';
 
 const Footer = () => {
   return (
@@ -19,13 +20,13 @@ const Footer = () => {
               Transform your study sessions with an AI chatbot tailored to your lecture material.
             </p>
             <div className="flex space-x-4">
-              <a href="https://www.instagram.com" className="text-gray-500 hover:text-study-500 transition-colors">
-                <Instagram className="h-5 w-5" />
+              {/* <a href="https://www.instagram.com" className="text-gray-500 hover:text-study-500 transition-colors">
+                <FaInstagram className="h-5 w-5" />
+              </a> */}
+              <a href="https://www.linkedin.com/in/michael-minh-le/" className="text-gray-500 hover:text-study-500 transition-colors">
+                <FaLinkedin className="h-5 w-5" />
               </a>
-              <a href="https://www.linkedin.com" className="text-gray-500 hover:text-study-500 transition-colors">
-                <Linkedin className="h-5 w-5" />
-              </a>
-              <a href="mailto:example@gmail.com" className="text-gray-500 hover:text-study-500 transition-colors">
+              <a href="mailto:personalstudyai@gmail.com" className="text-gray-500 hover:text-study-500 transition-colors">
                 <Mail className="h-5 w-5" />
               </a>
             </div>

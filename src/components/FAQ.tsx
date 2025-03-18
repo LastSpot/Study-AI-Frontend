@@ -32,6 +32,18 @@ const FAQ = () => {
     {
       question: "Can Study AI handle any subject?",
       answer: "Study AI is designed to work across a wide range of academic disciplines – from humanities and social sciences to STEM fields. Whether you're studying quantum physics, literary theory, or economic principles, Study AI can help you better understand your course materials."
+    },
+    {
+      question: "What platforms does Study AI support?",
+      answer: "We only support desktop browsers, except for Safari, for now. We are working on a mobile interface and will update this section when it's ready."
+    },
+    {
+      question: "How does Study AI compare to other AI learning tools?",
+      answer: "Study AI stands out by providing personalized, context-specific answers based on your unique study materials. Other AI tools may offer general knowledge, but Study AI is tailored specifically to your academic needs."
+    },
+    {
+      question: "I need help, who can I contact?",
+      answer: "Look at the bottom of the page for our contact information."
     }
   ];
 
