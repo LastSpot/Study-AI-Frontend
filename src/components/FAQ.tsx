@@ -39,7 +39,7 @@ const FAQ = () => {
     },
     {
       question: "What platforms does Study AI support?",
-      answer: "We only support desktop browsers, except for Safari, for now. We are working on a mobile interface and will update this section when it's ready."
+      answer: "We only support desktop browsers, except for Safari (unless users disable 'Prevent Cross-Site Tracking'). We are working on a mobile interface and will update this section when it's ready."
     },
     {
       question: "How does Study AI compare to other AI learning tools?",
