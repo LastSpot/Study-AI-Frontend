@@ -7,12 +7,23 @@ import HowItWorks from '../components/HowItWorks';
 import Testimonials from '../components/Testimonials';
 import FAQ from '../components/FAQ';
 import Footer from '../components/Footer';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Index = () => {
 
   useEffect(() => {
     document.title = "Study AI - Homepage";
   }, []);
+
+  const { api } = useAuth();
+
+  useEffect(() => {
+    api.get('/').then(() => {
+      console.log('Backend server is ready');
+    }).catch(() => {
+      console.log('Backend server is starting up...');
+    });
+  }, [api]);
 
   return (
     <div className="min-h-screen flex flex-col">
