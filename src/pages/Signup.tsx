@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { BookOpenText, UserPlus, User, Lock, Mail, Eye, EyeOff } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
+import PolicyDialog from '@/components/PolicyDialog';
 
 const Signup = () => {
 
@@ -21,6 +22,14 @@ const Signup = () => {
     full_name: '',
     email: '',
     password: ''
+  });
+
+  const [policyDialog, setPolicyDialog] = useState<{
+    isOpen: boolean;
+    type: 'terms' | 'privacy';
+  }>({
+    isOpen: false,
+    type: 'terms'
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -144,7 +153,22 @@ const Signup = () => {
                 required
               />
               <label htmlFor="terms" className="ml-2 block text-sm text-gray-700">
-                I agree to the <a href="#" className="text-study-500 hover:text-study-600">Terms</a> and <a href="#" className="text-study-500 hover:text-study-600">Privacy Policy</a>
+                I agree to the{' '}
+                <button
+                  type="button"
+                  onClick={() => setPolicyDialog({ isOpen: true, type: 'terms' })}
+                  className="text-study-500 hover:text-study-600"
+                >
+                  Terms
+                </button>
+                {' '}and{' '}
+                <button
+                  type="button"
+                  onClick={() => setPolicyDialog({ isOpen: true, type: 'privacy' })}
+                  className="text-study-500 hover:text-study-600"
+                >
+                  Privacy Policy
+                </button>
               </label>
             </div>
             
@@ -165,6 +189,12 @@ const Signup = () => {
           </p>
         </div>
       </div>
+
+      <PolicyDialog
+        isOpen={policyDialog.isOpen}
+        onClose={() => setPolicyDialog({ ...policyDialog, isOpen: false })}
+        type={policyDialog.type}
+      />
     </div>
   );
 };
