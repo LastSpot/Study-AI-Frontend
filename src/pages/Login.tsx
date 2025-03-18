@@ -45,7 +45,7 @@ const Login = () => {
       // Force a small delay to ensure state updates are processed
       setTimeout(() => {
         navigate('/chat', { replace: true });
-      }, 100);
+      }, 1000);
       
     } catch (error) {
       setIsLoading(false);
