@@ -14,9 +14,13 @@ const FAQ = () => {
       answer: "Study AI is an advanced learning assistant that helps students study more efficiently by providing personalized answers based on their uploaded course materials. Unlike generic AI tools, Study AI understands your specific lecture notes, textbooks, and study materials to provide contextually relevant support."
     },
     {
-      question: "Why isn't Study AI free?",
-      answer: "Study AI requires sophisticated AI infrastructure and continuous development to maintain its high quality. The subscription model allows us to provide personalized, accurate assistance while constantly improving our technology. We offer affordable pricing plans specifically designed for students."
+      question: "Is Study AI currently free?",
+      answer: "Yes! Study AI is currently in Open Beta phase and all features are completely free of charge. We're excited to have users try out our platform and provide feedback during this phase."
     },
+    // {
+    //   question: "Why isn't Study AI free?",
+    //   answer: "Study AI requires sophisticated AI infrastructure and continuous development to maintain its high quality. The subscription model allows us to provide personalized, accurate assistance while constantly improving our technology. We offer affordable pricing plans specifically designed for students."
+    // },
     {
       question: "Does Study AI actually work?",
       answer: "Yes! Students from top universities have reported significant improvements in their study efficiency and comprehension after using Study AI. Our system has been trained to understand complex academic materials across various disciplines, providing accurate, contextual responses."
@@ -44,7 +48,7 @@ const FAQ = () => {
     {
       question: "I need help, who can I contact?",
       answer: "Look at the bottom of the page for our contact information."
-    }
+    },
   ];
 
   return (
